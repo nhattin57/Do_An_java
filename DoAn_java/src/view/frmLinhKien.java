@@ -5,19 +5,40 @@
  */
 package view;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  *
  * @author admin
  */
 public class frmLinhKien extends javax.swing.JFrame  {
-
+    public Connection conn;
+     public   Statement myStmt=null;
+     public   ResultSet myRs=null;
     /**
      * Creates new form frmLinhKien
      */
     public frmLinhKien() {
         initComponents();
+        KetNoiCSDL();
     }
-
+   
+    public Connection KetNoiCSDL(){
+        String user="sa";
+        String pass="123456";
+        try{
+            conn=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLLinhKienPC_Laptop_java",user,pass);
+            System.out.println("Thanh Cong");
+            return conn;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return conn;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +74,7 @@ public class frmLinhKien extends javax.swing.JFrame  {
         tblLinhKien = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("form Linh Kiện");
 
         jLabel1.setText("Tìm Kiếm Nhanh:");
 
@@ -128,8 +150,8 @@ public class frmLinhKien extends javax.swing.JFrame  {
                                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtTenLK, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtSuatXu, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(233, 233, 233))))
+                                            .addComponent(txtSuatXu, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(3, 3, 3))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

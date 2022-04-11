@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package doan_java;
-import com.sun.jdi.connect.spi.Connection;
+
 import java.sql.*;
 /**
  *
@@ -14,11 +14,19 @@ public class ConnecToDatabase {
      public Connection conn;
      public   Statement myStmt=null;
      public   ResultSet myRs=null;
-    public Connection getConnection() throws SQLException{
-        if(conn==null){
-            conn= (Connection) DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLSV");
+     
+    public Connection KetNoiCSDL(){
+        String user="sa";
+        String pass="123456";
+        try{
+            conn=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLLinhKienPC_Laptop_java",user,pass);
+            System.out.println("Thanh Cong");
             return conn;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
         return conn;
     }
 }
+
