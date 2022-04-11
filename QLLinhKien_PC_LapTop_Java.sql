@@ -25,7 +25,6 @@ XuatSu nvarchar(30),
 GiaBan bigint,
 BaoHanh nvarchar(20),
 SoLuongTon int, --hiển thị đang còn hàng hay hết hàng
-HinhAnh nvarchar(255) null,
 MaLoaiLinhKien int,
 MaNCC int,
 DaXoa bit, -- xoa =1, chua xoa =0
@@ -149,9 +148,9 @@ insert into LoaiLinhKien values(N'Bàn Phím')
 insert into LoaiLinhKien values(N'Chuột')
 insert into LoaiLinhKien values(N'Màn Hình')
 
-insert into LinhKien values(N'Bàn Phím Cơ 500',N'Nhật Bản',1000000,N'1 Năm',50,N'banphimco.png',1,1,0)
-insert into LinhKien values(N'Chuột Logitech pro',N'Trung Quốc',50000,N'1 Năm',100,N'chuotlogitechpro.png',2,1,0)
-insert into LinhKien values(N'Màn Hình AOE 2K5',N'Hàn QUốc',9999999,N'1,5 Năm',100,N'manhinhaoe2k5.png',3,2,0)
+insert into LinhKien values(N'Bàn Phím Cơ 500',N'Nhật Bản',1000000,N'1 Năm',50,1,1,0)
+insert into LinhKien values(N'Chuột Logitech pro',N'Trung Quốc',50000,N'1 Năm',100,2,1,0)
+insert into LinhKien values(N'Màn Hình AOE 2K5',N'Hàn QUốc',9999999,N'1,5 Năm',100,3,2,0)
 select *from KHACHHANG
 insert into KHACHHANG values(N'Nguyễn Đình Hùng',N'Nam','035488888',0)
 insert into KHACHHANG values(N'Nguyễn Văn Quang',N'Nam','055777777',0)
