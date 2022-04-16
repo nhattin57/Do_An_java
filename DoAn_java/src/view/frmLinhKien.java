@@ -9,21 +9,26 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author admin
  */
 public class frmLinhKien extends javax.swing.JFrame  {
     public Connection conn;
-     public   Statement myStmt=null;
-     public   ResultSet myRs=null;
+     public   PreparedStatement ps=null;
+     public   ResultSet rs=null;
+     DefaultTableModel dtm;
     /**
      * Creates new form frmLinhKien
      */
     public frmLinhKien() {
         initComponents();
-        KetNoiCSDL();
+        dtm=(DefaultTableModel) tblLinhKien.getModel();
+        //KetNoiCSDL();
+        hienThiDuLieu();
     }
    
     public Connection KetNoiCSDL(){
@@ -38,6 +43,31 @@ public class frmLinhKien extends javax.swing.JFrame  {
             e.printStackTrace();
         }
         return conn;
+    }
+    private void hienThiDuLieu(){
+        try{
+            tblLinhKien.removeAll();
+            conn=KetNoiCSDL();
+            String sql="select *from LinhKien where DaXoa=0";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Vector<Object> vec=new Vector<>();
+                vec.add(rs.getInt("MaLinhKien"));
+                vec.add(rs.getString("TenLinhKien"));
+                vec.add(rs.getString("XuatSu"));
+                vec.add(rs.getLong("GiaBan"));
+                vec.add(rs.getString("BaoHanh"));
+                vec.add(rs.getInt("SoLuongTon"));
+                vec.add(rs.getInt("MaLoaiLinhKien"));
+                vec.add(rs.getInt("MaNCC"));
+                dtm.addRow(vec);
+            }
+            
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,10 +148,13 @@ public class frmLinhKien extends javax.swing.JFrame  {
 
             },
             new String [] {
-                "STT", "Mã Linh Kiện", "Tên Linh Kiện", "Suất Xứ", "Gía Bán", "Bảo Hành", "Số Lượng Tồn", "Nhà Cung Cấp"
+                "Mã Linh Kiện", "Tên Linh Kiện", "Suất Xứ", "Gía Bán", "Bảo Hành", "Số Lượng Tồn", "Loại LK", "Nhà Cung Cấp"
             }
         ));
         jScrollPane1.setViewportView(tblLinhKien);
+        if (tblLinhKien.getColumnModel().getColumnCount() > 0) {
+            tblLinhKien.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
