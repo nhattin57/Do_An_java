@@ -165,6 +165,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTimKiem">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTimKiemKeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -248,31 +251,49 @@
       <Properties>
         <Property name="label" type="java.lang.String" value="Th&#xea;m"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThemActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="btnLuu">
       <Properties>
         <Property name="label" type="java.lang.String" value="L&#x1b0;u"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLuuActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="btnXoa">
       <Properties>
         <Property name="label" type="java.lang.String" value="X&#xf3;a"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="btnKoLuu">
       <Properties>
         <Property name="label" type="java.lang.String" value="Kh&#xf4;ng L&#x1b0;u"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKoLuuActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="btnDong">
       <Properties>
         <Property name="label" type="java.lang.String" value="&#x110;&#xf3;ng"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDongActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="btnSua">
       <Properties>
         <Property name="label" type="java.lang.String" value="S&#x1eed;a"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSuaActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -343,6 +364,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblLinhKienMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
