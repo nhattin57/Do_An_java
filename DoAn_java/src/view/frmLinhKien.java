@@ -28,6 +28,7 @@ public class frmLinhKien extends javax.swing.JFrame  {
      */
     public frmLinhKien() {
         initComponents();
+        setLocationRelativeTo(null);
         dtm=(DefaultTableModel) tblLinhKien.getModel();
         //KetNoiCSDL();
            hienThiDuLieu();
