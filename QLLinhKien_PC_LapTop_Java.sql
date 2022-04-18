@@ -69,14 +69,12 @@ PRIMARY KEY(MaHoaDon),
 GO
 --
 CREATE TABLE CTHD(
-MaCTHD int identity(1,1),
 MaHoaDon int ,
 MaLinhKien int,
 TenLinhKien nvarchar(100),
 GiaBan bigint,
 SoLuong int,
-ThanhTien bigint,
-primary key(MaCTHD)
+ThanhTien bigint
 )
 GO
 --

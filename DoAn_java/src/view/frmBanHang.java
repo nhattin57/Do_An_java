@@ -10,12 +10,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.*;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import java.util.Date;  
 /**
  *
  * @author admin
@@ -320,10 +321,20 @@ public class frmBanHang extends javax.swing.JFrame {
         txtTongTien.setEditable(false);
 
         btnThanhToan.setText("Thanh Toán");
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThanhToanActionPerformed(evt);
+            }
+        });
 
         btnInHoaDon.setText("In Hóa Đơn");
 
         btnXoaSP.setText("Xóa Sản Phẩm");
+        btnXoaSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaSPActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -587,6 +598,108 @@ public class frmBanHang extends javax.swing.JFrame {
        hienThiThongTinSauKhiChonSanPham(cboTenLK.getItemAt(cboTenLK.getSelectedIndex()));
        txtThanhTien.setText("");
     }//GEN-LAST:event_txtGiaBanMouseClicked
+
+    private void btnXoaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSPActionPerformed
+        // TODO add your handling code here:
+        int row=tblHoaDon.getSelectedRow();
+        if(row==-1){
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn hàng trong bảng để xóa");
+            return;
+        }
+        else{
+            dtm.removeRow(row);
+            long tongTien=tinhTongTien();
+                Locale VN = new Locale("vi", "VN");
+                Currency dollars = Currency.getInstance(VN);
+                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+                txtTongTien.setText(VNDFormat.format(tongTien));
+        }
+    }//GEN-LAST:event_btnXoaSPActionPerformed
+    
+    private void themHoaDon(int maKH, int maNV, long tongTien){
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");  
+        Date date = new Date();  
+        String date1=formatter.format(date).toString();
+        try{
+            conn=KetNoiCSDL();
+            String sql="insert into HOADON(MANV,MaKhachHang,NgayXuatHoaDon,Tongtien,DaXoa)\n" +
+                        "values(?,?,?,?,?)";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maNV);
+            ps.setInt(2, maKH);
+            ps.setString(3, date1);
+            ps.setLong(4, tongTien);
+            ps.setInt(5, 0);
+            ps.executeUpdate();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    private int layMaHoaDon(){
+        int ma=0;
+        try{
+            conn=KetNoiCSDL();
+            String sql="select top 1 MaHoaDon from HOADON order by MaHoaDon desc";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                ma=rs.getInt("MaHoaDon");
+                return ma;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return ma;
+    }
+    
+    private void themCTHD(int maHD, int maLK,String tenLK,long giaBan,int soLuong,long thanhTien){
+         try{
+             conn=KetNoiCSDL();
+            String sql="insert into CTHD(MaHoaDon,MaLinhKien,TenLinhKien,GiaBan,SoLuong,ThanhTien)\n" +
+                        "values(?,?,?,?,?,?)";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maHD);
+            ps.setInt(2, maLK);
+            ps.setString(3, tenLK);
+            ps.setLong(4, giaBan);
+            ps.setInt(5, soLuong);
+            ps.setLong(6, thanhTien);
+            ps.executeUpdate();
+         }catch(Exception e){
+             e.printStackTrace();
+         }
+    }
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
+        // TODO add your handling code here:
+        int rowCount=tblHoaDon.getRowCount();
+        if(rowCount==-1){
+            JOptionPane.showMessageDialog(rootPane, "Chưa thêm sản phẩm ");
+            return;
+        }
+        else{
+            int maNV=LayMaNhanVienTheoTen(cboTenNV.getSelectedItem().toString());
+            int maKH=LayMaKhachHangTheoTen(cboTenKH.getSelectedItem().toString());
+            long tongTien=tinhTongTien();
+            themHoaDon(maKH, maNV, tongTien);
+            int maHD=layMaHoaDon();
+            for (int i = 0; i < rowCount; i++) {
+                String tenLK=tblHoaDon.getValueAt(i, 0).toString();
+                int maLK=Integer.parseInt(tblHoaDon.getValueAt(i, 1).toString());
+                long giaBan=Long.parseLong(tblHoaDon.getValueAt(i, 2).toString());
+                int soLuong=Integer.parseInt(tblHoaDon.getValueAt(i, 3).toString());
+                long thanhTien=Long.parseLong(tblHoaDon.getValueAt(i, 4).toString());
+                themCTHD(maHD, maLK, tenLK, giaBan, soLuong, thanhTien);
+            }
+            dtm.setRowCount(0);
+            txtGiaBan.setText("");
+            txtMaLK.setText("");
+            txtSoLuong.setText("");
+            txtThanhTien.setText("");
+            txtTongTien.setText("");
+            JOptionPane.showMessageDialog(rootPane, "Thanh toán thành công ");
+        }
+    }//GEN-LAST:event_btnThanhToanActionPerformed
+    
     private long tinhTongTien(){
          int row=tblHoaDon.getRowCount();
          long tongtien=0;
