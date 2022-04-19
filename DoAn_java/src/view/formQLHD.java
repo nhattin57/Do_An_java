@@ -4,20 +4,182 @@
  * and open the template in the editor.
  */
 package view;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.*;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Locale;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.Date;  
 /**
  *
  * @author admin
  */
 public class formQLHD extends javax.swing.JFrame {
-
+    public Connection conn;
+     public   PreparedStatement ps=null;
+     public   ResultSet rs=null;
+     DefaultTableModel dtmHD;
+     DefaultTableModel dtmCTHD;
     /**
      * Creates new form frmCTHD
      */
     public formQLHD() {
         initComponents();
+        HienThiCboNhanVien();
+        HienThiCboKhachHang();
+        HienThiCboTenLinhKien();
+        dtmCTHD=(DefaultTableModel) tblCTHD.getModel();
+        dtmHD=(DefaultTableModel) tblHoaDon.getModel();
+        hienThiTableHoaDon();
     }
-
+    
+     public Connection KetNoiCSDL(){
+        String user="sa";
+        String pass="123456";
+        try{
+            conn=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLLinhKienPC_Laptop_java",user,pass);
+            
+            return conn;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return conn;
+    }
+     public void HienThiCboTenLinhKien(){
+        try{
+            conn=KetNoiCSDL();
+            String sql="select TenLinhKien from LinhKien where DaXoa=0";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            cboTenLK.removeAllItems();
+            while(rs.next()){
+                cboTenLK.addItem(rs.getString("TenLinhKien"));
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void HienThiCboNhanVien(){
+        try{
+            conn=KetNoiCSDL();
+            String sql="select HoTen from NHANVIEN where DaXoa=0";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            cboTenNV.removeAllItems();
+            while(rs.next()){
+                cboTenNV.addItem(rs.getString("HoTen"));
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void HienThiCboKhachHang(){
+        try{
+            conn=KetNoiCSDL();
+            String sql="select HoTen from KHACHHANG where DaXoa=0";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            cboTenKH.removeAllItems();
+            while(rs.next()){
+                cboTenKH.addItem(rs.getString("HoTen"));
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    private int LayMaKhachHangTheoTen(String TenKH){
+        int Ma=0;
+        try{
+            //conn=KetNoiCSDL();
+            String sql="select MaKhachHang from KHACHHANG where DaXoa=0 and Hoten=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, TenKH);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                 Ma=rs.getInt("MaKhachHang");
+                 return Ma;
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+            // xong gán nó cho thằng mã này
+        return Ma;
+    }
+    
+    private int LayMaNhanVienTheoTen(String TenNV){
+        int Ma=0;
+        try{
+            //conn=KetNoiCSDL();
+            String sql="select MANV from NHANVIEN where DaXoa=0 and HoTen=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, TenNV);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                 Ma=rs.getInt("MANV");
+                 return Ma;
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+            // xong gán nó cho thằng mã này
+        return Ma;
+    }
+    
+    private int LayMaLinhKienTheoTen(String TenLinhKien){
+        int Ma=0;
+        try{
+            conn=KetNoiCSDL();
+            String sql="select MaLinhKien from LinhKien where DaXoa=0 and TenLinhKien=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, TenLinhKien);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                 Ma=rs.getInt("MaLinhKien");
+                 return Ma;
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+            // xong gán nó cho thằng mã này
+        return Ma;
+    }
+    
+    private void hienThiTableHoaDon(){
+        try {
+            conn=KetNoiCSDL();
+            String sql="select MaHoaDon,b.Hoten,c.HoTen,NgayXuatHoaDon,Tongtien\n" +
+                        "from HOADON a, KHACHHANG b, NHANVIEN c\n" +
+                        "where a.DaXoa=0 and a.MaKhachHang=b.MaKhachHang and a.MANV=c.MANV";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Vector<Object> vec=new Vector<>();
+                vec.add(rs.getInt("MaHoaDon"));
+                vec.add(rs.getString("Hoten"));
+                vec.add(rs.getString("HoTen"));
+                vec.add(rs.getDate("NgayXuatHoaDon"));
+                vec.add(rs.getLong("TongTien"));
+                dtmHD.addRow(vec);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,7 +200,7 @@ public class formQLHD extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtMaHD = new javax.swing.JTextField();
         txtTongTien = new javax.swing.JTextField();
-        cboTeNV = new javax.swing.JComboBox<>();
+        cboTenNV = new javax.swing.JComboBox<>();
         cboTenKH = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -94,9 +256,9 @@ public class formQLHD extends javax.swing.JFrame {
 
         jLabel4.setText("Khách Hàng");
 
-        cboTeNV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtMaHD.setEditable(false);
 
-        cboTenKH.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtTongTien.setEditable(false);
 
         jLabel5.setText("Tổng Tiền");
 
@@ -107,8 +269,6 @@ public class formQLHD extends javax.swing.JFrame {
         jLabel8.setText("Gía Bán");
 
         jLabel9.setText("Số Lượng");
-
-        cboTenLK.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel10.setText("Thành Tiền");
 
@@ -160,7 +320,7 @@ public class formQLHD extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cboTeNV, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cboTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(52, 52, 52)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel5)
@@ -222,8 +382,8 @@ public class formQLHD extends javax.swing.JFrame {
                             .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboTeNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                            .addComponent(cboTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -282,9 +442,9 @@ public class formQLHD extends javax.swing.JFrame {
     private javax.swing.JButton btnLuu;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JComboBox<String> cboTeNV;
     private javax.swing.JComboBox<String> cboTenKH;
     private javax.swing.JComboBox<String> cboTenLK;
+    private javax.swing.JComboBox<String> cboTenNV;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

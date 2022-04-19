@@ -22,7 +22,7 @@ import java.util.Date;
  * @author admin
  */
 public class frmBanHang extends javax.swing.JFrame {
-    public Connection conn;
+     public Connection conn;
      public   PreparedStatement ps=null;
      public   ResultSet rs=null;
      DefaultTableModel dtm;
