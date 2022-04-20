@@ -483,7 +483,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             }
             
             tableModel.fireTableDataChanged();
-            JOptionPane.showMessageDialog(this, "Tìm thấy nhà cung cấp có tên " + txtTimKiem.getText());
+            JOptionPane.showMessageDialog(this, "Tìm thấy nhà cung cấp có tên gần đúng là: " + txtTimKiem.getText());
             rs.close();
             ps.close();
             conn.close();
