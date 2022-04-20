@@ -711,7 +711,7 @@ public class formQLHD extends javax.swing.JFrame {
             else{
                 capNhatHoaDon(maHD, maKH, maNV);
                 hienThiTableHoaDon();
-                JOptionPane.showMessageDialog(rootPane, "Cập nhật hóa đơn thành công");
+                JOptionPane.showMessageDialog(rootPane, "Cập nhật hóa đơn thành công khách hàng và nhân viên cho hóa đơn "+maHD+" thành công");
             }
             
     }//GEN-LAST:event_btnLuuActionPerformed
