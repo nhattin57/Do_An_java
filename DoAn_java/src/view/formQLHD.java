@@ -143,7 +143,7 @@ public class formQLHD extends javax.swing.JFrame {
         int Ma=0;
         try{
             conn=KetNoiCSDL();
-            String sql="select MaLinhKien from LinhKien where DaXoa=0 and TenLinhKien=?";
+            String sql="select MaLinhKien from LinhKien where TenLinhKien=?";
             ps=conn.prepareStatement(sql);
             ps.setString(1, TenLinhKien);
             rs=ps.executeQuery();
@@ -161,6 +161,7 @@ public class formQLHD extends javax.swing.JFrame {
     
     private void hienThiTableHoaDon(){
         try {
+            dtmHD.setRowCount(0);
             conn=KetNoiCSDL();
             String sql="select MaHoaDon,b.Hoten,c.HoTen,NgayXuatHoaDon,Tongtien\n" +
                         "from HOADON a, KHACHHANG b, NHANVIEN c\n" +
@@ -173,11 +174,144 @@ public class formQLHD extends javax.swing.JFrame {
                 vec.add(rs.getString("Hoten"));
                 vec.add(rs.getString("HoTen"));
                 vec.add(rs.getDate("NgayXuatHoaDon"));
-                vec.add(rs.getLong("TongTien"));
+                vec.add(rs.getLong("Tongtien"));
                 dtmHD.addRow(vec);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private void hienThitableCTHDTheoMaHD(int maHD){
+        try {
+            conn=KetNoiCSDL();
+            dtmCTHD.setRowCount(0);
+            String sql="select TenLinhKien,GiaBan,SoLuong,ThanhTien from CTHD where MaHoaDon=?";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maHD);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Vector<Object> vec=new Vector<>();
+                vec.add(rs.getString("TenLinhKien"));
+                vec.add(rs.getLong("GiaBan"));
+                vec.add(rs.getInt("SoLuong"));
+                vec.add(rs.getLong("ThanhTien"));
+                dtmCTHD.addRow(vec);
+            }
+        } catch (Exception e) {
+        }
+    }
+    private void timHoaDonTheoTenKhachHang(String tenKH){
+        try {
+            conn=KetNoiCSDL();
+            dtmHD.setRowCount(0);
+            String sql="select MaHoaDon,b.Hoten,c.HoTen,NgayXuatHoaDon,Tongtien\n" +
+                        "from HOADON a, KHACHHANG b, NHANVIEN c\n" +
+                        "where a.DaXoa=0 and a.MaKhachHang=b.MaKhachHang and a.MANV=c.MANV and b.Hoten like N'%"+tenKH+"%'";
+            ps=conn.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Vector<Object> vec=new Vector<>();
+                vec.add(rs.getInt("MaHoaDon"));
+                vec.add(rs.getString("Hoten"));
+                vec.add(rs.getString("HoTen"));
+                vec.add(rs.getDate("NgayXuatHoaDon"));
+                vec.add(rs.getLong("TongTien"));
+                dtmHD.addRow(vec);
+            }
+        } catch (Exception e) {
+        }
+    }
+    private void xoaHDTheoMaHD(int maHD){
+        try {
+            conn=KetNoiCSDL();
+            String sql="update HOADON set DaXoa=1 where MaHoaDon=?";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void xoaCTHD(int maHD, int maLK){
+        try {
+            conn=KetNoiCSDL();
+            String sql="delete from CTHD where MaHoaDon=? and MaLinhKien=?";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maHD);
+            ps.setInt(2, maLK);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private long layTongTienSauKhiXoaHoaDon(int maHD){
+        long tongtien=0;
+        try {
+            conn=KetNoiCSDL();
+            String sql="select ThanhTien from CTHD where MaHoaDon=?";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maHD);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                long thanhtien=rs.getLong("ThanhTien");
+                tongtien+=thanhtien;
+            }
+            return tongtien;
+        } catch (Exception e) {
+        }
+        return tongtien;
+    }
+    private void capNhatTongTienHoaDonSauKhiXoaCTHD(int maHD, long tongTien){
+        try {
+            conn=KetNoiCSDL();
+            String sql="update HOADON set Tongtien=? where MaHoaDon=?";
+             ps=conn.prepareStatement(sql);
+             ps.setLong(1, tongTien);
+             ps.setInt(2, maHD);
+             ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    void dongTextBox(){
+        txtGiaBan.setText("");
+        txtMaHD.setText("");
+        txtSoLuong.setText("");
+        txtThanhTien.setText("");
+        txtTongTien.setText("");
+    }
+    void dongTextBoxCTHD(){
+        txtGiaBan.setText("");
+        txtSoLuong.setText("");
+        txtThanhTien.setText("");
+    }
+    private void capNhatHoaDon(int maHD, int maKH, int maNV){
+        try {
+            conn=KetNoiCSDL();
+            String sql="update HOADON set MaKhachHang=?, MANV=? where MaHoaDon=?";
+            ps=conn.prepareStatement(sql);
+            ps.setInt(1, maKH);
+            ps.setInt(2, maNV);
+            ps.setInt(3, maHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void capNhatCTHD(int maHD, int maLK, long giaBan, int soLuong, long thanhTien){
+        try {
+            conn=KetNoiCSDL();
+            String sql="update CTHD set GiaBan=?,SoLuong=?, ThanhTien=? where MaHoaDon=? and MaLinhKien=?";
+            ps=conn.prepareStatement(sql);
+            ps.setLong(1, giaBan);
+            ps.setInt(2, soLuong);
+            ps.setLong(3, thanhTien);
+            ps.setInt(4, maHD);
+            ps.setInt(5, maLK);
+            ps.executeUpdate();
+        } catch (Exception e) {
         }
     }
     /**
@@ -212,33 +346,47 @@ public class formQLHD extends javax.swing.JFrame {
         txtGiaBan = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtThanhTien = new javax.swing.JTextField();
-        btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnLuu = new javax.swing.JButton();
-        btnKoLuu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("form Quản Lý Hóa Đơn");
 
         jLabel1.setText("Tìm Kiếm Nhanh:");
 
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+        });
+
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã Hóa Đơn", "Khách Hàng", "Nhân Viên", "Ngày Xuất HD", "Tổng Tiền"
+                "Mã HD", "Khách Hàng", "Nhân Viên", "Ngày Xuất HD", "Tổng Tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHoaDonMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblHoaDon);
+        if (tblHoaDon.getColumnModel().getColumnCount() > 0) {
+            tblHoaDon.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tblHoaDon.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblHoaDon.getColumnModel().getColumn(2).setPreferredWidth(120);
+        }
 
         tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -248,6 +396,11 @@ public class formQLHD extends javax.swing.JFrame {
                 "Tên Linh Kiện", "Giá Bán", "Số Lượng", "Thành Tiền"
             }
         ));
+        tblCTHD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCTHDMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblCTHD);
 
         jLabel2.setText("Mã Hóa Đơn");
@@ -270,15 +423,35 @@ public class formQLHD extends javax.swing.JFrame {
 
         jLabel9.setText("Số Lượng");
 
+        txtSoLuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtSoLuongMouseClicked(evt);
+            }
+        });
+
+        txtGiaBan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtGiaBanMouseClicked(evt);
+            }
+        });
+
         jLabel10.setText("Thành Tiền");
 
-        btnSua.setText("Sửa");
+        txtThanhTien.setEditable(false);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnLuu.setText("Lưu");
-
-        btnKoLuu.setText("Không lưu");
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -287,14 +460,14 @@ public class formQLHD extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(348, 348, 348)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,8 +487,12 @@ public class formQLHD extends javax.swing.JFrame {
                                             .addComponent(jLabel9)
                                             .addComponent(txtSoLuong)
                                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtThanhTien, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))))))
-                        .addGap(24, 24, 24))
+                                            .addComponent(txtThanhTien, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))))
+                                .addGap(174, 174, 174))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(1, 1, 1))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,17 +510,13 @@ public class formQLHD extends javax.swing.JFrame {
                             .addComponent(txtMaHD, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnKoLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(124, 124, 124))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,14 +556,12 @@ public class formQLHD extends javax.swing.JFrame {
                             .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cboTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 49, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnKoLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,6 +571,160 @@ public class formQLHD extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
+        // TODO add your handling code here:
+        dongTextBoxCTHD();
+        int row=tblHoaDon.getSelectedRow();
+        int maHD=Integer.parseInt(tblHoaDon.getValueAt(row, 0).toString());
+        String tenkh=tblHoaDon.getValueAt(row, 1).toString();
+        String tenNV=tblHoaDon.getValueAt(row, 2).toString();
+        long tongTien=Long.parseLong(tblHoaDon.getValueAt(row, 4).toString());
+                Locale VN = new Locale("vi", "VN");
+                Currency vnd = Currency.getInstance(VN);
+                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+                txtTongTien.setText(VNDFormat.format(tongTien));
+        txtMaHD.setText(tblHoaDon.getValueAt(row, 0).toString());
+        cboTenKH.getModel().setSelectedItem(tenkh);
+        cboTenNV.getModel().setSelectedItem(tenNV);
+            hienThitableCTHDTheoMaHD(maHD);
+    }//GEN-LAST:event_tblHoaDonMouseClicked
+
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        // TODO add your handling code here:
+        timHoaDonTheoTenKhachHang(txtTimKiem.getText());
+    }//GEN-LAST:event_txtTimKiemKeyPressed
+
+    private void tblCTHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCTHDMouseClicked
+        // TODO add your handling code here:
+        int row=tblCTHD.getSelectedRow();
+        cboTenLK.getModel().setSelectedItem(tblCTHD.getValueAt(row, 0));
+        txtGiaBan.setText(tblCTHD.getValueAt(row, 1).toString());
+        txtSoLuong.setText(tblCTHD.getValueAt(row, 2).toString());
+        long thanhtien=Long.parseLong(tblCTHD.getValueAt(row, 3).toString());
+                Locale VN = new Locale("vi", "VN");
+                Currency vnd = Currency.getInstance(VN);
+                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+                txtThanhTien.setText(VNDFormat.format(thanhtien));
+    }//GEN-LAST:event_tblCTHDMouseClicked
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        try{
+        int selectedRowHD=tblHoaDon.getSelectedRow();
+        int selectedrowCTHD=tblCTHD.getSelectedRow();
+        int maHD=Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
+        int maLK=LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn dữ liệu để xóa");
+            return;
+        }
+        int selectedRowHD=tblHoaDon.getSelectedRow();
+        int selectedrowCTHD=tblCTHD.getSelectedRow();
+        int maHD=Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
+        int maLK=LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
+        
+        if(selectedRowHD!=-1 &&selectedrowCTHD!=-1){
+            
+           int result= JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc muốn xóa chi tiết hóa đơn này không?",
+                   "Thông báo", JOptionPane.YES_NO_OPTION);
+           if(result==JOptionPane.YES_OPTION){
+               
+               xoaCTHD(maHD, maLK);
+               
+               long tongtiensauKhiXoa=layTongTienSauKhiXoaHoaDon(maHD);
+               capNhatTongTienHoaDonSauKhiXoaCTHD(maHD, tongtiensauKhiXoa);
+               hienThiTableHoaDon();
+               hienThitableCTHDTheoMaHD(maHD);
+               dongTextBox();
+               JOptionPane.showMessageDialog(rootPane, "Xóa thành công");
+               return;
+           }
+        }
+        else if(selectedRowHD!=-1){
+            int result=JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc muốn xóa luôn hóa đơn "+maHD+" không?"
+                    , "Xóa Hóa Đơn"
+                    , JOptionPane.YES_NO_OPTION);
+            if(result==JOptionPane.YES_OPTION){
+                xoaHDTheoMaHD(maHD);
+                hienThiTableHoaDon();
+                dongTextBox();
+                
+                return;
+            }
+        }
+        
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        // TODO add your handling code here:
+        try{
+            int selectedRowHD=tblHoaDon.getSelectedRow();
+            int selectedrowCTHD=tblCTHD.getSelectedRow();
+            int maHD=Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
+            int maLK=LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
+            int maNV=LayMaNhanVienTheoTen(cboTenNV.getSelectedItem().toString());
+            int maKH=LayMaKhachHangTheoTen(cboTenKH.getSelectedItem().toString());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn dữ liệu và thay đổi các giá trị ở textbox"
+                    + "hoặc combobox để lưu !");
+            return;
+        }
+        
+            
+            
+            int selectedRowHD=tblHoaDon.getSelectedRow();
+            int selectedrowCTHD=tblCTHD.getSelectedRow();
+            int maHD=Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
+            int maLK=LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
+            int maNV=LayMaNhanVienTheoTen(cboTenNV.getSelectedItem().toString());
+            int maKH=LayMaKhachHangTheoTen(cboTenKH.getSelectedItem().toString());
+            
+            if(selectedRowHD != -1 && selectedrowCTHD != -1){
+                    try {
+                            int soLuong=Integer.parseInt(txtSoLuong.getText());
+                    } catch (Exception e) {
+                            JOptionPane.showMessageDialog(rootPane, "Số lượng phải là số");
+                            return;
+                    }
+
+                    try {
+                        long giaBan=Long.parseLong(txtGiaBan.getText());
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(rootPane, "Giá bán phải là số");
+                        return;
+                    }
+                int soLuong=Integer.parseInt(txtSoLuong.getText());
+                Long giaBan=Long.parseLong(txtGiaBan.getText());
+                long thanhTien=soLuong*giaBan;
+                
+                capNhatCTHD(maHD, maLK, giaBan, soLuong, thanhTien);
+                Long tongtien=layTongTienSauKhiXoaHoaDon(maHD);
+                capNhatTongTienHoaDonSauKhiXoaCTHD(maHD, tongtien);
+                hienThiTableHoaDon();
+                hienThitableCTHDTheoMaHD(maHD);
+                dongTextBoxCTHD();
+                txtTongTien.setText("");
+                JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
+                return;
+            }
+            else{
+                capNhatHoaDon(maHD, maKH, maNV);
+                hienThiTableHoaDon();
+                JOptionPane.showMessageDialog(rootPane, "Cập nhật hóa đơn thành công");
+            }
+            
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    private void txtSoLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSoLuongMouseClicked
+        // TODO add your handling code here:
+        txtThanhTien.setText("");
+    }//GEN-LAST:event_txtSoLuongMouseClicked
+
+    private void txtGiaBanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtGiaBanMouseClicked
+        // TODO add your handling code here:
+        txtThanhTien.setText("");
+    }//GEN-LAST:event_txtGiaBanMouseClicked
 
     /**
      * @param args the command line arguments
@@ -438,9 +763,7 @@ public class formQLHD extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnKoLuu;
     private javax.swing.JButton btnLuu;
-    private javax.swing.JButton btnSua;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cboTenKH;
     private javax.swing.JComboBox<String> cboTenLK;
