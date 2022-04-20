@@ -58,6 +58,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         txtTongTien.setText("");
         txtDiaChi.setText("");
         txtDiaChiNV.setText("");
+        txtNgayLapPhieu.setText("");
         txtMaPhieuNhapHang.grabFocus();
     }
 
@@ -174,6 +175,8 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         txtPhoneNhaCC = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtDiaChiNV = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtNgayLapPhieu = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         btnTimKiem = new javax.swing.JButton();
         txtTimKiem = new javax.swing.JTextField();
@@ -238,6 +241,8 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
 
         jLabel9.setText("Địa chỉ");
 
+        jLabel10.setText("Ngày lập phiếu");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -253,12 +258,14 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel9))
-                        .addGap(39, 39, 39)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtPhoneNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                             .addComponent(cbbNhanVien, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDiaChiNV))))
+                            .addComponent(txtDiaChiNV)
+                            .addComponent(txtNgayLapPhieu))))
                 .addGap(85, 85, 85)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -318,7 +325,12 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addComponent(txtDiaChiNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addContainerGap())
+                            .addComponent(txtNgayLapPhieu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng chính"));
@@ -365,15 +377,11 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKhongLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -393,6 +401,11 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 "Mã phiếu nhập Hàng", "Tên nhân viên", "Tên nhà cung cấp", "Ngày lập phiếu", "Tổng tiền thanh toán"
             }
         ));
+        tblPhieuNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPhieuNhapHangMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblPhieuNhapHang);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -465,7 +478,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     }//GEN-LAST:event_cbbNhanVienActionPerformed
 
     private void cbbTenNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTenNCCActionPerformed
-       try {
+        try {
 
             String tenNhaCC = (String) cbbTenNCC.getSelectedItem();
             conn = ConnectToDataBase();
@@ -484,6 +497,26 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_cbbTenNCCActionPerformed
+
+    private void tblPhieuNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhieuNhapHangMouseClicked
+
+        int row = tblPhieuNhapHang.getSelectedRow();
+        try {
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Bạn chưa lựa chọn vào cột nào");
+            } else {
+                txtMaPhieuNhapHang.setText(tblPhieuNhapHang.getValueAt(row, 0).toString());
+                cbbNhanVien.setSelectedItem(tblPhieuNhapHang.getValueAt(row, 1).toString());
+                cbbTenNCC.setSelectedItem(tblPhieuNhapHang.getValueAt(row, 2).toString());
+                txtNgayLapPhieu.setText(tblPhieuNhapHang.getValueAt(row, 3).toString());
+                txtTongTien.setText(tblPhieuNhapHang.getValueAt(row, 4).toString());
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tblPhieuNhapHangMouseClicked
 
     /**
      * @param args the command line arguments
@@ -530,6 +563,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbbNhanVien;
     private javax.swing.JComboBox<String> cbbTenNCC;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -547,6 +581,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtDiaChiNV;
     private javax.swing.JTextField txtMaPhieuNhapHang;
+    private javax.swing.JTextField txtNgayLapPhieu;
     private javax.swing.JTextField txtPhoneNhaCC;
     private javax.swing.JTextField txtPhoneNhanVien;
     private javax.swing.JTextField txtTimKiem;
