@@ -683,6 +683,10 @@ public class formQLHD extends javax.swing.JFrame {
             if(selectedRowHD != -1 && selectedrowCTHD != -1){
                     try {
                             int soLuong=Integer.parseInt(txtSoLuong.getText());
+                            if(soLuong<0){
+                                JOptionPane.showMessageDialog(rootPane, "Số lượng phải lớn hơn 0");
+                                return;
+                            }
                     } catch (Exception e) {
                             JOptionPane.showMessageDialog(rootPane, "Số lượng phải là số");
                             return;
@@ -690,6 +694,10 @@ public class formQLHD extends javax.swing.JFrame {
 
                     try {
                         long giaBan=Long.parseLong(txtGiaBan.getText());
+                        if(giaBan<0){
+                            JOptionPane.showMessageDialog(rootPane, "Gía bán phải lớn hơn 0");
+                            return;
+                        }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(rootPane, "Giá bán phải là số");
                         return;
