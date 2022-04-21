@@ -25,6 +25,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     public PreparedStatement ps;
     public ResultSet rs;
     DefaultTableModel tableModel;
+    DefaultTableModel tableModelCT;
 
     /**
      * Creates new form frmQLPhieuNhapHang
@@ -33,12 +34,13 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) tblPhieuNhapHang.getModel();
-        tableModel = (DefaultTableModel) tblCTPhieuNhapHang.getModel();
+        tableModelCT = (DefaultTableModel) tblCTPhieuNhapHang.getModel();
         txtMaPhieuNhapHang.grabFocus();
         hienThiDuLieuPhieuNhapHang();
         hienThiDuLieuCTPhieuNhapHang();
         hienThiNhaCungCap();
         hienThiNhanVien();
+        hienThiTenLoaiLK();
     }
 
     private Connection ConnectToDataBase() {
@@ -53,7 +55,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         return conn;
     }
 
-    public void refresh() {
+    public void refreshThongTinChung() {
         txtMaPhieuNhapHang.setText("");
         txtPhoneNhaCC.setText("");
         txtPhoneNhanVien.setText("");
@@ -63,6 +65,16 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         txtDiaChiNV.setText("");
         txtNgayLapPhieu.setText("");
         txtMaPhieuNhapHang.grabFocus();
+    }
+    
+    public void refreshThongTinCT() {
+        txtMaCT.setText("");
+        txtTenLK.setText("");
+        txtXuatSu.setText("");
+        txtGiaBan.setText("");
+        txtSL.setText("");
+        txtThanhTien.setText("");
+        txtMaCT.grabFocus();
     }
 
     private void hienThiDuLieuPhieuNhapHang() {
@@ -110,7 +122,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             //cập nhập lại giá trị bên trong bảng nha cung cấp
-            tableModel.setRowCount(0);
+            tableModelCT.setRowCount(0);
             
             while (rs.next()) {
                 String[] row = new String[]{
@@ -122,11 +134,11 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     rs.getString("SoLuongNhap"),
                     rs.getString("ThanhTien"),
                 };
-                tableModel.addRow(row);
+                tableModelCT.addRow(row);
             }
 
             // cập nhật lại dữ liệu bên trong bảng nhà cung cấp
-            tableModel.fireTableDataChanged();
+            tableModelCT.fireTableDataChanged();
             rs.close();
             ps.close();
             conn.close();
@@ -186,6 +198,32 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         }
 
     }
+    
+     private void hienThiTenLoaiLK() {
+        try {
+
+            conn = ConnectToDataBase();
+            String sql = "select TenLoaiLinhKien from LoaiLinhKien ";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            Vector data = new Vector();
+            while (rs.next()) {
+
+                data.add(rs.getString("TenLoaiLinhKien"));
+            }
+            DefaultComboBoxModel cmbModel = new DefaultComboBoxModel(data);
+            cbbLoaiLK.setModel(cmbModel);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -231,6 +269,21 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCTPhieuNhapHang = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        txtMaCT = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        cbbLoaiLK = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        txtTenLK = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txtXuatSu = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        txtGiaBan = new javax.swing.JTextField();
+        txtSL = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtThanhTien = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -385,6 +438,11 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         btnLuu.setText("Lưu");
 
         btnThem.setText("Thêm mới");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -474,6 +532,20 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 "Mã CT phiếu nhập hàng", "Tên loại linh kiên", "Tên linh kiên", "Xuất sứ", "Giá bán", "Số lượng nhập", "Thành tiền"
             }
         ));
+        tblCTPhieuNhapHang.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tblCTPhieuNhapHangAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tblCTPhieuNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCTPhieuNhapHangMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCTPhieuNhapHang);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -493,6 +565,87 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 .addGap(309, 309, 309))
         );
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin chi tiết phiếu nhập hàng"));
+
+        jLabel11.setText("Mã chi tiết phiếu nhập hàng");
+
+        jLabel12.setText("Tên loại linh kiện");
+
+        jLabel13.setText("Tên linh kiện");
+
+        jLabel14.setText("Xuất sứ");
+
+        jLabel15.setText("Giá bán");
+
+        jLabel16.setText("Số lượng nhập");
+
+        jLabel17.setText("Thành tiền");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel17)))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtMaCT)
+                    .addComponent(cbbLoaiLK, 0, 186, Short.MAX_VALUE)
+                    .addComponent(txtThanhTien))
+                .addGap(85, 85, 85)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel14))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTenLK, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                    .addComponent(txtXuatSu))
+                .addGap(94, 94, 94)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16))
+                .addGap(64, 64, 64)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtGiaBan)
+                    .addComponent(txtSL, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMaCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13)
+                        .addComponent(txtTenLK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel15)
+                        .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel11))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(cbbLoaiLK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtXuatSu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16))
+                    .addComponent(txtSL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -502,12 +655,13 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 39, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -523,7 +677,9 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -595,6 +751,36 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblPhieuNhapHangMouseClicked
 
+    private void tblCTPhieuNhapHangAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblCTPhieuNhapHangAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblCTPhieuNhapHangAncestorAdded
+
+    private void tblCTPhieuNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCTPhieuNhapHangMouseClicked
+       int row = tblCTPhieuNhapHang.getSelectedRow();
+        try {
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Bạn chưa lựa chọn vào cột nào");
+            } else {
+                txtMaCT.setText(tblCTPhieuNhapHang.getValueAt(row, 0).toString());
+                cbbLoaiLK.setSelectedItem(tblCTPhieuNhapHang.getValueAt(row, 1).toString());
+                txtTenLK.setText(tblCTPhieuNhapHang.getValueAt(row, 2).toString());
+                txtXuatSu.setText(tblCTPhieuNhapHang.getValueAt(row, 3).toString());
+                txtGiaBan.setText(tblCTPhieuNhapHang.getValueAt(row, 4).toString());
+                txtSL.setText(tblCTPhieuNhapHang.getValueAt(row, 5).toString());
+                txtThanhTien.setText(tblCTPhieuNhapHang.getValueAt(row, 6).toString());
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tblCTPhieuNhapHangMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        refreshThongTinChung();
+        refreshThongTinCT();
+    }//GEN-LAST:event_btnThemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -637,10 +823,18 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbbLoaiLK;
     private javax.swing.JComboBox<String> cbbNhanVien;
     private javax.swing.JComboBox<String> cbbTenNCC;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -654,18 +848,25 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblCTPhieuNhapHang;
     private javax.swing.JTable tblPhieuNhapHang;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtDiaChiNV;
+    private javax.swing.JTextField txtGiaBan;
+    private javax.swing.JTextField txtMaCT;
     private javax.swing.JTextField txtMaPhieuNhapHang;
     private javax.swing.JTextField txtNgayLapPhieu;
     private javax.swing.JTextField txtPhoneNhaCC;
     private javax.swing.JTextField txtPhoneNhanVien;
+    private javax.swing.JTextField txtSL;
+    private javax.swing.JTextField txtTenLK;
+    private javax.swing.JTextField txtThanhTien;
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTongTien;
+    private javax.swing.JTextField txtXuatSu;
     // End of variables declaration//GEN-END:variables
 
 }
