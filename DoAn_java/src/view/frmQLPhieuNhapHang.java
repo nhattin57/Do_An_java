@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,8 +33,10 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) tblPhieuNhapHang.getModel();
+        tableModel = (DefaultTableModel) tblCTPhieuNhapHang.getModel();
         txtMaPhieuNhapHang.grabFocus();
         hienThiDuLieuPhieuNhapHang();
+        hienThiDuLieuCTPhieuNhapHang();
         hienThiNhaCungCap();
         hienThiNhanVien();
     }
@@ -81,6 +84,43 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     rs.getString("TenNCC"),
                     rs.getString("NgayNhapHang"),
                     rs.getString("Tongtien")
+                };
+                tableModel.addRow(row);
+            }
+
+            // cập nhật lại dữ liệu bên trong bảng nhà cung cấp
+            tableModel.fireTableDataChanged();
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void hienThiDuLieuCTPhieuNhapHang() {
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select a.MaCTPNH,b.TenLoaiLinhKien,a.TenLinhKien, a.XuatSu, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
+                    + "from CTPNH a, LoaiLinhKien b, PhieuNhapHang c, LinhKien d\n"
+                    + "where a.MaPNH = c.MaPNH and a.MaLinhKien = d.MaLinhKien and d.MaLinhKien = b.MaLoaiLinhKien";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            //cập nhập lại giá trị bên trong bảng nha cung cấp
+            tableModel.setRowCount(0);
+            
+            while (rs.next()) {
+                String[] row = new String[]{
+                    rs.getString("MaCTPNH"),
+                    rs.getString("TenloaiLinhKien"),
+                    rs.getString("TenLinhKien"),
+                    rs.getString("XuatSu"),
+                    rs.getString("GiaBan"),
+                    rs.getString("SoLuongNhap"),
+                    rs.getString("ThanhTien"),
                 };
                 tableModel.addRow(row);
             }
@@ -188,6 +228,9 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPhieuNhapHang = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCTPhieuNhapHang = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -416,7 +459,38 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách chi tiết phiếu nhập hàng"));
+
+        tblCTPhieuNhapHang.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã CT phiếu nhập hàng", "Tên loại linh kiên", "Tên linh kiên", "Xuất sứ", "Giá bán", "Số lượng nhập", "Thành tiền"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCTPhieuNhapHang);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(309, 309, 309))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -427,12 +501,13 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 39, Short.MAX_VALUE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -445,8 +520,10 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(255, 255, 255))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
@@ -573,10 +650,13 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblCTPhieuNhapHang;
     private javax.swing.JTable tblPhieuNhapHang;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtDiaChiNV;
