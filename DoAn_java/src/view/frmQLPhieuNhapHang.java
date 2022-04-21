@@ -37,7 +37,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         tableModelCT = (DefaultTableModel) tblCTPhieuNhapHang.getModel();
         txtMaPhieuNhapHang.grabFocus();
         hienThiDuLieuPhieuNhapHang();
-        hienThiDuLieuCTPhieuNhapHang();
         hienThiNhaCungCap();
         hienThiNhanVien();
         hienThiTenLoaiLK();
@@ -66,7 +65,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         txtNgayLapPhieu.setText("");
         txtMaPhieuNhapHang.grabFocus();
     }
-    
+
     public void refreshThongTinCT() {
         txtMaCT.setText("");
         txtTenLK.setText("");
@@ -123,7 +122,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
 
             //cập nhập lại giá trị bên trong bảng nha cung cấp
             tableModelCT.setRowCount(0);
-            
+
             while (rs.next()) {
                 String[] row = new String[]{
                     rs.getString("MaCTPNH"),
@@ -132,8 +131,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     rs.getString("XuatSu"),
                     rs.getString("GiaBan"),
                     rs.getString("SoLuongNhap"),
-                    rs.getString("ThanhTien"),
-                };
+                    rs.getString("ThanhTien"),};
                 tableModelCT.addRow(row);
             }
 
@@ -148,6 +146,42 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    private void hienthiCTtheoMaPNH(int maPNH) {
+
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select a.MaCTPNH,b.TenLoaiLinhKien,a.TenLinhKien, a.XuatSu, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
+                    + "from CTPNH a, LoaiLinhKien b, PhieuNhapHang c, LinhKien d\n"
+                    + "where a.MaPNH = ? and a.MaLinhKien = d.MaLinhKien and d.MaLinhKien = b.MaLoaiLinhKien";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, maPNH);
+            rs = ps.executeQuery();
+
+            //cập nhập lại giá trị bên trong bảng nha cung cấp
+            tableModelCT.setRowCount(0);
+
+            while (rs.next()) {
+                String[] row = new String[]{
+                    rs.getString("MaCTPNH"),
+                    rs.getString("TenloaiLinhKien"),
+                    rs.getString("TenLinhKien"),
+                    rs.getString("XuatSu"),
+                    rs.getString("GiaBan"),
+                    rs.getString("SoLuongNhap"),
+                    rs.getString("ThanhTien"),};
+                tableModelCT.addRow(row);
+                
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+        
+    
 
     private void hienThiNhaCungCap() {
         try {
@@ -198,8 +232,8 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         }
 
     }
-    
-     private void hienThiTenLoaiLK() {
+
+    private void hienThiTenLoaiLK() {
         try {
 
             conn = ConnectToDataBase();
@@ -223,7 +257,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         }
 
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -385,17 +418,14 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMaPhieuNhapHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbbTenNCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMaPhieuNhapHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbbTenNCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -553,7 +583,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
         );
@@ -734,6 +763,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private void tblPhieuNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhieuNhapHangMouseClicked
 
         int row = tblPhieuNhapHang.getSelectedRow();
+        int maPNH=Integer.parseInt(tblPhieuNhapHang.getValueAt(row, 0).toString());
         try {
             if (row < 0) {
                 JOptionPane.showMessageDialog(this, "Bạn chưa lựa chọn vào cột nào");
@@ -743,6 +773,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 cbbTenNCC.setSelectedItem(tblPhieuNhapHang.getValueAt(row, 2).toString());
                 txtNgayLapPhieu.setText(tblPhieuNhapHang.getValueAt(row, 3).toString());
                 txtTongTien.setText(tblPhieuNhapHang.getValueAt(row, 4).toString());
+                hienthiCTtheoMaPNH(maPNH);
             }
 
         } catch (Exception e) {
@@ -756,7 +787,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     }//GEN-LAST:event_tblCTPhieuNhapHangAncestorAdded
 
     private void tblCTPhieuNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCTPhieuNhapHangMouseClicked
-       int row = tblCTPhieuNhapHang.getSelectedRow();
+        int row = tblCTPhieuNhapHang.getSelectedRow();
         try {
             if (row < 0) {
                 JOptionPane.showMessageDialog(this, "Bạn chưa lựa chọn vào cột nào");
@@ -768,6 +799,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                 txtGiaBan.setText(tblCTPhieuNhapHang.getValueAt(row, 4).toString());
                 txtSL.setText(tblCTPhieuNhapHang.getValueAt(row, 5).toString());
                 txtThanhTien.setText(tblCTPhieuNhapHang.getValueAt(row, 6).toString());
+                hienThiDuLieuCTPhieuNhapHang();
             }
 
         } catch (Exception e) {

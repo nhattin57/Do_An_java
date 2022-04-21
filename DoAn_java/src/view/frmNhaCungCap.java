@@ -396,7 +396,23 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             Validation.check(txtTenNhaCungCap, sb, "Tên nhà cung cấp không được để trống");
             Validation.check(txtDiaChi, sb, "Địa chỉ không được để trống");
-            Validation.check(txtSDT, sb, "Số diện thoại cung cấp không được để trống");
+               while (true) {
+                    if (txtSDT.getText().trim().equals("")) {
+                       JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+                        txtSDT.grabFocus();
+                        return;
+                    } else if (txtSDT.getText().trim().length() > 11 || txtSDT.getText().trim().length() < 10) {
+                        JOptionPane.showMessageDialog(this, "SĐT chứa từ 10-11 số.");
+                        txtSDT.grabFocus();
+                        return;
+                    } else if (!txtSDT.getText().trim().matches("0[1-9]{1}\\d{8,9}")) {
+                         JOptionPane.showMessageDialog(this, "SĐT chưa đúng định dạng.");
+                        txtSDT.grabFocus();
+                        return;
+                    } else {
+                        break;
+                    }
+                }
 
             if (sb.length() > 0) {
                 JOptionPane.showMessageDialog(this, sb.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
