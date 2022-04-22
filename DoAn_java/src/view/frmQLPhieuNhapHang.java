@@ -148,7 +148,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     }
 
     private void hienthiCTtheoMaPNH(int maPNH) {
-
         try {
             conn = ConnectToDataBase();
             String sql = "select a.MaCTPNH,b.TenLoaiLinhKien,a.TenLinhKien, a.XuatSu, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
@@ -171,17 +170,14 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     rs.getString("SoLuongNhap"),
                     rs.getString("ThanhTien"),};
                 tableModelCT.addRow(row);
-                
-            }
 
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             e.printStackTrace();
         }
 
     }
-        
-    
 
     private void hienThiNhaCungCap() {
         try {
@@ -293,7 +289,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         txtTimKiem = new javax.swing.JTextField();
         btnKhongLuu = new javax.swing.JButton();
         btnLuu = new javax.swing.JButton();
-        btnThem = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -321,23 +316,23 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel1.setText("Phiếu Nhập Hàng");
+        jLabel1.setText("Quản lý phiếu nhập hàng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(495, 495, 495)
                 .addComponent(jLabel1)
-                .addGap(516, 516, 516))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin chung"));
@@ -353,6 +348,8 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jLabel6.setText("Địa chỉ");
 
         jLabel7.setText("Tổng tiền thanh toán");
+
+        txtMaPhieuNhapHang.setEditable(false);
 
         cbbTenNCC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,13 +464,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
 
         btnLuu.setText("Lưu");
 
-        btnThem.setText("Thêm mới");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
-
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -493,30 +483,29 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTimKiem))
+                        .addComponent(txtTimKiem)
+                        .addGap(210, 210, 210))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnKhongLuu)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnThem)))
-                .addGap(32, 32, 32)
-                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKhongLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19))
@@ -597,6 +586,8 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin chi tiết phiếu nhập hàng"));
 
         jLabel11.setText("Mã chi tiết phiếu nhập hàng");
+
+        txtMaCT.setEditable(false);
 
         jLabel12.setText("Tên loại linh kiện");
 
@@ -763,7 +754,7 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private void tblPhieuNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhieuNhapHangMouseClicked
 
         int row = tblPhieuNhapHang.getSelectedRow();
-        int maPNH=Integer.parseInt(tblPhieuNhapHang.getValueAt(row, 0).toString());
+        int maPNH = Integer.parseInt(tblPhieuNhapHang.getValueAt(row, 0).toString());
         try {
             if (row < 0) {
                 JOptionPane.showMessageDialog(this, "Bạn chưa lựa chọn vào cột nào");
@@ -808,11 +799,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblCTPhieuNhapHangMouseClicked
 
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        refreshThongTinChung();
-        refreshThongTinCT();
-    }//GEN-LAST:event_btnThemActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -852,7 +838,6 @@ public class frmQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JButton btnKhongLuu;
     private javax.swing.JButton btnLuu;
     private javax.swing.JButton btnSua;
-    private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cbbLoaiLK;
