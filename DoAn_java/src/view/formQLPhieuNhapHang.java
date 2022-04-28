@@ -9,12 +9,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-
 
 /**
  *
@@ -35,16 +36,29 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         tableModel_PNH = (DefaultTableModel) tablePNH.getModel();
-        tableModel_CT_PNH = (DefaultTableModel) table_CT_PNH.getModel();
+        tableModel_CT_PNH = (DefaultTableModel) table_CT.getModel();
         cbbNhanVien.grabFocus();
         layThongTinPNH();
         layTenNhanVien();
         layTenNhaCungCap();
 
-        // Ẩn cột mã phiếu nhập hàng và hoạt động tốt đối với tôi ẩn một cột 0 và tôi vẫn có thể nhận được giá trị từ nó
+        // Ẩn cột mã phiếu nhập hàng và hoạt động tốt, đối với tôi ẩn một cột 0 và tôi vẫn có thể nhận được giá trị từ nó
         tablePNH.getColumnModel().getColumn(0).setWidth(0);
         tablePNH.getColumnModel().getColumn(0).setMinWidth(0);
         tablePNH.getColumnModel().getColumn(0).setMaxWidth(0);
+
+        // Ẩn cột mã phiếu chi tiết nhập hàng và hoạt động tốt, đối với tôi ẩn một cột 0 và tôi vẫn có thể nhận được giá trị từ nó
+        table_CT.getColumnModel().getColumn(0).setWidth(0);
+        table_CT.getColumnModel().getColumn(0).setMinWidth(0);
+        table_CT.getColumnModel().getColumn(0).setMaxWidth(0);
+
+        table_CT.getColumnModel().getColumn(9).setWidth(0);
+        table_CT.getColumnModel().getColumn(9).setMinWidth(0);
+        table_CT.getColumnModel().getColumn(9).setMaxWidth(0);
+
+        table_CT.getColumnModel().getColumn(8).setWidth(0);
+        table_CT.getColumnModel().getColumn(8).setMinWidth(0);
+        table_CT.getColumnModel().getColumn(8).setMaxWidth(0);
 
     }
 
@@ -67,6 +81,16 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         txtDiaChi_NCC.setText("");
         txtSDT_NCC.setText("");
         txtTongTien.setText("");
+    }
+
+    public void lamMoiCTPhieuNhapHang() {
+        txtTen_SP.setText("");
+        txtLoai_SP.setText("");
+        txtXuatSu_SP.setText("");
+        txtBaoHanh.setText("");
+        txtGia_SP.setText("");
+        txtSL.setText("");
+        txtThanhTien.setText("");
     }
 
     private void layThongTinPNH() {
@@ -101,9 +125,9 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
     private void layThongTin_CT() {
         try {
             conn = ConnectToDataBase();
-            String sql = "select c.TenLoaiLinhKien, b.TenLinhKien, a.XuatSu, a.BaoHanh, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
+            String sql = "select a.MaCTPNH, c.TenLoaiLinhKien, b.TenLinhKien, a.XuatSu, a.BaoHanh, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
                     + "from CTPNH a, LinhKien b, LoaiLinhKien c\n"
-                    + "where a.MaCTPNH = b.MaLinhKien and a.LoaiLinhKien = c.MaLoaiLinhKien";
+                    + "where a.MaLinhKien = b.MaLinhKien and a.LoaiLinhKien = c.MaLoaiLinhKien ";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -112,6 +136,7 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
 
             while (rs.next()) {
                 String[] row = new String[]{
+                    rs.getString("MaCTPNH"),
                     rs.getString("TenloaiLinhKien"),
                     rs.getString("TenLinhKien"),
                     rs.getString("XuatSu"),
@@ -134,7 +159,7 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
     private void layThongTin_CT_PNH_TheoMa(int maPNH) {
         try {
             conn = ConnectToDataBase();
-            String sql = "select c.TenLoaiLinhKien, b.TenLinhKien, a.XuatSu, a.BaoHanh, a.GiaBan, a.SoLuongNhap, a.ThanhTien\n"
+            String sql = "select a.MaCTPNH, c.TenLoaiLinhKien, b.TenLinhKien, a.XuatSu, a.BaoHanh, a.GiaBan, a.SoLuongNhap, a.ThanhTien,a.MaPNH,a.MaLinhKien\n"
                     + "from CTPNH a, LinhKien b, LoaiLinhKien c, PhieuNhapHang d\n"
                     + "where a.MaPNH = ? and a.MaLinhKien = b.MaLinhKien and a.LoaiLinhKien = c.MaLoaiLinhKien and a.MaPNH = d.MaPNH";
             ps = conn.prepareStatement(sql);
@@ -146,13 +171,16 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
 
             while (rs.next()) {
                 String[] row = new String[]{
+                    rs.getString("MaCTPNH"),
                     rs.getString("TenloaiLinhKien"),
                     rs.getString("TenLinhKien"),
                     rs.getString("XuatSu"),
                     rs.getString("BaoHanh"),
                     rs.getString("GiaBan"),
                     rs.getString("SoLuongNhap"),
-                    rs.getString("ThanhTien"),};
+                    rs.getString("ThanhTien"),
+                    rs.getString("MaPNH"),
+                    rs.getString("MaLinhKien"),};
                 tableModel_CT_PNH.addRow(row);
             }
             tableModel_CT_PNH.fireTableDataChanged();
@@ -209,11 +237,71 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         }
     }
 
+    private int layMa_PNH() {
+        int ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select MaPNH from PhieuNhapHang where  daxoa = 0 order by MaPNH desc";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            Vector data = new Vector();
+            while (rs.next()) {
+                ma = rs.getInt("MaPNH");
+                return ma;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
+    private int layMaCT_PNH() {
+        int ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select a.MaCTPNH from  CTPNH a, PhieuNhapHang b where a.MaPNH = b.MaPNH";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            Vector data = new Vector();
+            while (rs.next()) {
+                ma = rs.getInt("MaCTPNH");
+                return ma;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
+    private int layMa_LK() {
+        int ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select a.MaLinhKien from LinhKien a";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            Vector data = new Vector();
+            while (rs.next()) {
+                ma = rs.getInt("MaLinhKien");
+                return ma;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
     private void xoa_PNH(int maPNH) {
         try {
             conn = ConnectToDataBase();
             String sql = "update PhieuNhapHang set DaXoa=1 where maPNH=?";
-            ps = conn.prepareCall(sql);
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, maPNH);
             ps.executeUpdate();
 
@@ -225,8 +313,20 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         }
     }
 
-    private void xoa_CT_PNH(int ma_CT_PNH) {
-
+    private void xoa_CT_PNH(int ma_CT_PNH, int ma_PNH, int ma_LK) {
+        try {
+            conn = ConnectToDataBase();
+            String sql = "delete from CTPNH where MaCTPNH = ? and maPNH = ? and MaLinhKien = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, ma_CT_PNH);
+            ps.setInt(2, ma_PNH);
+            ps.setInt(3, ma_LK);
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -279,7 +379,7 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         txtBaoHanh = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        table_CT_PNH = new javax.swing.JTable();
+        table_CT = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -550,7 +650,7 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(30, 30, 30)
+                        .addGap(49, 49, 49)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSL, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtGia_SP, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -559,12 +659,14 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
                             .addComponent(txtThanhTien)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTen_SP, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLoai_SP, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtLoai_SP, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(txtTen_SP)
+                                .addGap(1, 1, 1)))))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -603,20 +705,20 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Bảng chi tiết phiếu nhập hàng"));
 
-        table_CT_PNH.setModel(new javax.swing.table.DefaultTableModel(
+        table_CT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Loại Sản Phẩm", "Tên Loại Sản Phẩm", "Xuất Sứ", "Bảo Hành", "Giá Bán", "Số Lượng", "Thành Tiền"
+                "Mã Chi Tiết Phiếu Nhập Hàng", "Loại Sản Phẩm", "Tên Loại Sản Phẩm", "Xuất Sứ", "Bảo Hành", "Giá Bán", "Số Lượng", "Thành Tiền", "Mã Phiếu Nhập Hàng", "Mã Loại Linh Kiện"
             }
         ));
-        table_CT_PNH.addMouseListener(new java.awt.event.MouseAdapter() {
+        table_CT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_CT_PNHMouseClicked(evt);
+                table_CTMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(table_CT_PNH);
+        jScrollPane2.setViewportView(table_CT);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -694,10 +796,16 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng nào trên bảng phiếu nhập hàng");
                 return;
             } else {
+
                 txtMa_PNH.setText(tablePNH.getValueAt(row, 0).toString());
                 cbbNhanVien.setSelectedItem(tablePNH.getValueAt(row, 1).toString());
                 cbbNhaCungCap.setSelectedItem(tablePNH.getValueAt(row, 2).toString());
-                txtTongTien.setText(tablePNH.getValueAt(row, 4).toString());
+                // txtTongTien.setText(tablePNH.getValueAt(row, 4).toString());
+                long tongTien = Long.parseLong(tableModel_PNH.getValueAt(row, 4).toString());
+                Locale VN = new Locale("vi", "VN");
+                Currency vnd = Currency.getInstance(VN);
+                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+                txtTongTien.setText(VNDFormat.format(tongTien));
                 layThongTin_CT_PNH_TheoMa(maPNH);
             }
         } catch (Exception e) {
@@ -705,7 +813,6 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_tablePNHMouseClicked
-
 
     private void cbbNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbNhaCungCapActionPerformed
         try {
@@ -786,35 +893,50 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
-    private void table_CT_PNHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_CT_PNHMouseClicked
+    private void table_CTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_CTMouseClicked
         try {
-            int row = table_CT_PNH.getSelectedRow();
+            int row = table_CT.getSelectedRow();
             if (row <= -1) {
                 JOptionPane.showMessageDialog(this, "Bạn chưa lựa chon dòng trên bảng chi tiết phiếu nhập hàng");
                 return;
             } else {
-                txtLoai_SP.setText(table_CT_PNH.getValueAt(row, 0).toString());
-                txtTen_SP.setText(table_CT_PNH.getValueAt(row, 1).toString());
-                txtXuatSu_SP.setText(table_CT_PNH.getValueAt(row, 2).toString());
-                txtBaoHanh.setText(table_CT_PNH.getValueAt(row, 3).toString());
-                txtGia_SP.setText(table_CT_PNH.getValueAt(row, 4).toString());
-                txtSL.setText(table_CT_PNH.getValueAt(row, 5).toString());
-                txtThanhTien.setText(table_CT_PNH.getValueAt(row, 6).toString());
+                txtLoai_SP.setText(table_CT.getValueAt(row, 1).toString());
+                txtTen_SP.setText(table_CT.getValueAt(row, 2).toString());
+                txtXuatSu_SP.setText(table_CT.getValueAt(row, 3).toString());
+                txtBaoHanh.setText(table_CT.getValueAt(row, 4).toString());
+                txtGia_SP.setText(table_CT.getValueAt(row, 5).toString());
+                txtSL.setText(table_CT.getValueAt(row, 6).toString());
+                long thanhTien = Long.parseLong(tableModel_CT_PNH.getValueAt(row, 7).toString());
+                Locale VN = new Locale("vi", "VN");
+                Currency vnd = Currency.getInstance(VN);
+                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+                txtThanhTien.setText(VNDFormat.format(thanhTien));
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
             e.printStackTrace();
         }
-    }//GEN-LAST:event_table_CT_PNHMouseClicked
+    }//GEN-LAST:event_table_CTMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
 
-        int selectedRow_PNH = tablePNH.getSelectedRow();
-        int maPNH = Integer.parseInt(tableModel_PNH.getValueAt(selectedRow_PNH, 0).toString());
+        int row = tablePNH.getSelectedRow();
+        // int maPNH = layMa_PNH();
+        int row_ct = table_CT.getSelectedRow();
+        int maCT = Integer.parseInt(tableModel_CT_PNH.getValueAt(row_ct, 0).toString());
+        int maPNH = Integer.parseInt(tableModel_CT_PNH.getValueAt(row_ct, 8).toString());
+        int maLK = Integer.parseInt(tableModel_CT_PNH.getValueAt(row_ct, 9).toString());
 
-        xoa_PNH(maPNH);
-        JOptionPane.showMessageDialog(this, "xoa thanh cong");
-        layThongTinPNH();
+        if (row_ct >= 0 && row >= 0) {
+            int rs = JOptionPane.showConfirmDialog(this, "Ban co muon xoa hoa don nay khong ?");
+            if (rs == JOptionPane.YES_OPTION) {
+                xoa_CT_PNH(maCT, maPNH, maLK);
+                JOptionPane.showMessageDialog(this, "xoa thanh cong");
+                layThongTin_CT_PNH_TheoMa(maPNH);
+            }
+        }
+
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
     /**
@@ -885,7 +1007,7 @@ public class formQLPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tablePNH;
-    private javax.swing.JTable table_CT_PNH;
+    private javax.swing.JTable table_CT;
     private javax.swing.JTextField txtBaoHanh;
     private javax.swing.JTextField txtDiaChi_NCC;
     private javax.swing.JTextField txtDiaChi_NV;

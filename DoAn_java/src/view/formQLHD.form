@@ -373,11 +373,6 @@
         <Property name="text" type="java.lang.String" value="Th&#xe0;nh Ti&#x1ec1;n"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtThanhTien">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnXoa">
       <Properties>
         <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
@@ -385,6 +380,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtThanhTien">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnLuu">
       <Properties>

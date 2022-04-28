@@ -34,6 +34,10 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tblNhaCungCap.getModel();
         txtTenNhaCungCap.grabFocus();
         hienThiDuLieu();
+        tblNhaCungCap.getColumnModel().getColumn(0).setWidth(0);
+        tblNhaCungCap.getColumnModel().getColumn(0).setMinWidth(0);
+        tblNhaCungCap.getColumnModel().getColumn(0).setMaxWidth(0);
+
     }
 
     //Hàm kết nối đến CSDL
@@ -448,16 +452,13 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa nhà nhà cung cấp ?") == JOptionPane.NO_OPTION) {
             return;
         }
-
         try {
             int maLK = Integer.parseInt(tblNhaCungCap.getValueAt(row, 0).toString());
             conn = ConnectToDataBase();
             String sql = "update NHACUNGCAP set daxoa = 1 where MaNCC = ? ";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, maLK);
-
             ps.executeUpdate();
-
             JOptionPane.showMessageDialog(rootPane, "Xóa nhà cung cấp thành công");
             hienThiDuLieu();
             refresh();
@@ -488,6 +489,8 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             if (rs.isBeforeFirst() == false) {
                 JOptionPane.showMessageDialog(this, "Tên nhà cung cấp "+ txtTimKiem.getText()+ " không tồn tại trong danh sách!");
+                txtTimKiem.setText("");
+                txtTimKiem.grabFocus();
                 return;
             }
             while (rs.next()) {

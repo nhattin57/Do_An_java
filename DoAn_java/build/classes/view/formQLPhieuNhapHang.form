@@ -503,7 +503,7 @@
                               <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
                               <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtSL" alignment="1" max="32767" attributes="0"/>
                               <Component id="txtGia_SP" alignment="1" max="32767" attributes="0"/>
@@ -514,13 +514,16 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="29" max="32767" attributes="0"/>
+                          <EmptySpace pref="36" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtTen_SP" min="-2" pref="160" max="-2" attributes="0"/>
-                              <Component id="txtLoai_SP" min="-2" pref="161" max="-2" attributes="0"/>
+                              <Component id="txtLoai_SP" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="txtTen_SP" max="32767" attributes="0"/>
+                                  <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -659,10 +662,11 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="table_CT_PNH">
+            <Component class="javax.swing.JTable" name="table_CT">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="7" rowCount="0">
+                  <Table columnCount="10" rowCount="0">
+                    <Column editable="true" title="M&#xe3; Chi Ti&#x1ebf;t Phi&#x1ebf;u Nh&#x1ead;p H&#xe0;ng" type="java.lang.Object"/>
                     <Column editable="true" title="Lo&#x1ea1;i S&#x1ea3;n Ph&#x1ea9;m" type="java.lang.Object"/>
                     <Column editable="true" title="T&#xea;n Lo&#x1ea1;i S&#x1ea3;n Ph&#x1ea9;m" type="java.lang.Object"/>
                     <Column editable="true" title="Xu&#x1ea5;t S&#x1ee9;" type="java.lang.Object"/>
@@ -670,10 +674,27 @@
                     <Column editable="true" title="Gi&#xe1; B&#xe1;n" type="java.lang.Object"/>
                     <Column editable="true" title="S&#x1ed1; L&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
                     <Column editable="true" title="Th&#xe0;nh Ti&#x1ec1;n" type="java.lang.Object"/>
+                    <Column editable="true" title="M&#xe3; Phi&#x1ebf;u Nh&#x1ead;p H&#xe0;ng" type="java.lang.Object"/>
+                    <Column editable="true" title="M&#xe3; Lo&#x1ea1;i Linh Ki&#x1ec7;n" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -716,7 +737,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="table_CT_PNHMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="table_CTMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

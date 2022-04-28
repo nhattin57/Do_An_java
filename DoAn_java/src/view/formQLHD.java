@@ -345,8 +345,8 @@ public class formQLHD extends javax.swing.JFrame {
         txtSoLuong = new javax.swing.JTextField();
         txtGiaBan = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtThanhTien = new javax.swing.JTextField();
         btnXoa = new javax.swing.JButton();
+        txtThanhTien = new javax.swing.JTextField();
         btnLuu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -437,14 +437,14 @@ public class formQLHD extends javax.swing.JFrame {
 
         jLabel10.setText("Thành Tiền");
 
-        txtThanhTien.setEditable(false);
-
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaActionPerformed(evt);
             }
         });
+
+        txtThanhTien.setEditable(false);
 
         btnLuu.setText("Lưu");
         btnLuu.addActionListener(new java.awt.event.ActionListener() {
@@ -613,8 +613,8 @@ public class formQLHD extends javax.swing.JFrame {
         try{
         int selectedRowHD=tblHoaDon.getSelectedRow();
         int selectedrowCTHD=tblCTHD.getSelectedRow();
-        int maHD=Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
-        int maLK=LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
+        int maHD = Integer.parseInt(tblHoaDon.getValueAt(selectedRowHD, 0).toString());
+        int maLK = LayMaLinhKienTheoTen(cboTenLK.getSelectedItem().toString());
         }catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, "Chưa chọn dữ liệu để xóa");
             return;
