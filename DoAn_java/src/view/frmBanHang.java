@@ -394,7 +394,7 @@ public class frmBanHang extends javax.swing.JFrame {
                             .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)
                             .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -541,7 +541,7 @@ public class frmBanHang extends javax.swing.JFrame {
                 int tongSL=slHienTai+slThem;
                 long thanhTienMoi=giaban*tongSL;
                 long giaBanMoi=Long.parseLong(txtGiaBan.getText());
-                
+               
                 tblHoaDon.setValueAt(giaBanMoi+"", i, 2);
                 tblHoaDon.setValueAt(tongSL+"", i, 3);
                 tblHoaDon.setValueAt(thanhTienMoi+"", i, 4);

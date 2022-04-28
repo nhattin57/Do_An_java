@@ -173,6 +173,12 @@ insert into CTPNH values(1,1,1,N'Bàn Phím Cơ 500',N'Nhật Bản',1000000,N'1
 insert into CTPNH values(1,2,2,N'Chuột Logitech pro',N'Trung Quốc',50000,N'1 Năm',100,5000000)
 insert into CTPNH values(1,3,3,N'Màn Hình AOE 2K5',N'Hàn QUốc',9999999,N'1,5 Năm',100,999999900)
 
+select top 1 mahoadon from HOADON
 
+select *from CTPNH 
 
+select *from PhieuNhapHang
 
+select maNV from NHANVIEN where DaXoa = 0 and HoTen = N''
+
+select MaPNH from PhieuNhapHang

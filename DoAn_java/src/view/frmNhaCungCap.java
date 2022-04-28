@@ -65,7 +65,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                     rs.getString("TenNCC"),
                     rs.getString("SDT"),
                     rs.getString("DiaChi"),
-                    rs.getString("MaNCC"),};
+                    };
                 tableModel.addRow(row);
             }
 
@@ -427,6 +427,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             ps.setString(2, txtSDT.getText());
             ps.setString(3, txtDiaChi.getText());
             ps.setInt(4, 0);
+            
             ps.executeUpdate();
 
             hienThiDuLieu();
@@ -486,7 +487,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             if (rs.isBeforeFirst() == false) {
-                JOptionPane.showMessageDialog(this, "tên nhà cung cấp "+ txtTimKiem.getText()+ " không tồn tại trong danh sách!");
+                JOptionPane.showMessageDialog(this, "Tên nhà cung cấp "+ txtTimKiem.getText()+ " không tồn tại trong danh sách!");
                 return;
             }
             while (rs.next()) {
