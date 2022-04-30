@@ -122,7 +122,7 @@ public class formQLHD extends javax.swing.JFrame {
     private int LayMaNhanVienTheoTen(String TenNV){
         int Ma=0;
         try{
-            //conn=KetNoiCSDL();
+            conn=KetNoiCSDL();
             String sql="select MANV from NHANVIEN where DaXoa=0 and HoTen=?";
             ps=conn.prepareStatement(sql);
             ps.setString(1, TenNV);
@@ -634,6 +634,7 @@ public class formQLHD extends javax.swing.JFrame {
                
                long tongtiensauKhiXoa=layTongTienSauKhiXoaHoaDon(maHD);
                capNhatTongTienHoaDonSauKhiXoaCTHD(maHD, tongtiensauKhiXoa);
+               
                hienThiTableHoaDon();
                hienThitableCTHDTheoMaHD(maHD);
                dongTextBox();

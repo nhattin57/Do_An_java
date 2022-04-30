@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import controller.Validation;
+import java.util.Vector;
 
 /**
  *
@@ -62,7 +63,6 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             //cập nhập lại giá trị bên trong bảng nha cung cấp
             tableModel.setRowCount(0);
-
             while (rs.next()) {
                 String[] row = new String[]{
                     rs.getString("MaNCC"),
@@ -202,7 +202,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp", "SĐT", "Địa Chỉ"
+                "STT", "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp", "SĐT", "Địa Chỉ"
             }
         ));
         tblNhaCungCap.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -212,7 +212,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblNhaCungCap);
         if (tblNhaCungCap.getColumnModel().getColumnCount() > 0) {
-            tblNhaCungCap.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tblNhaCungCap.getColumnModel().getColumn(1).setPreferredWidth(0);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
