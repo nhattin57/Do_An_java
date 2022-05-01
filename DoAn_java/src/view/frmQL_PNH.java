@@ -847,7 +847,7 @@ public class frmQL_PNH extends javax.swing.JFrame {
                 txtTongTien.setText("");
                 }
             } else {
-                int rs = JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật, chi tiết phiếu nhập hàng này không?");
+                int rs = JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật, phiếu nhập hàng này không?");
                 if (rs == JOptionPane.YES_OPTION) {
                     capNhat_PNH(maPNH, maNV, maNCC);
                     JOptionPane.showMessageDialog(this, "Cập nhật thông tin phiếu nhập hàng thành công!!!");

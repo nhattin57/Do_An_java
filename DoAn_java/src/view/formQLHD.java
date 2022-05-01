@@ -200,27 +200,7 @@ public class formQLHD extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-    private void timHoaDonTheoTenKhachHang(String tenKH){
-        try {
-            conn=KetNoiCSDL();
-            dtmHD.setRowCount(0);
-            String sql="select MaHoaDon,b.Hoten,c.HoTen,NgayXuatHoaDon,Tongtien\n" +
-                        "from HOADON a, KHACHHANG b, NHANVIEN c\n" +
-                        "where a.DaXoa=0 and a.MaKhachHang=b.MaKhachHang and a.MANV=c.MANV and b.Hoten like N'%"+tenKH+"%'";
-            ps=conn.prepareStatement(sql);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                Vector<Object> vec=new Vector<>();
-                vec.add(rs.getInt("MaHoaDon"));
-                vec.add(rs.getString("Hoten"));
-                vec.add(rs.getString("HoTen"));
-                vec.add(rs.getDate("NgayXuatHoaDon"));
-                vec.add(rs.getLong("TongTien"));
-                dtmHD.addRow(vec);
-            }
-        } catch (Exception e) {
-        }
-    }
+
     private void xoaHDTheoMaHD(int maHD){
         try {
             conn=KetNoiCSDL();
@@ -592,7 +572,6 @@ public class formQLHD extends javax.swing.JFrame {
 
     private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
         // TODO add your handling code here:
-        timHoaDonTheoTenKhachHang(txtTimKiem.getText());
     }//GEN-LAST:event_txtTimKiemKeyPressed
 
     private void tblCTHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCTHDMouseClicked

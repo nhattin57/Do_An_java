@@ -202,7 +202,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             },
             new String [] {
-                "STT", "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp", "SĐT", "Địa Chỉ"
+                "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp", "SĐT", "Địa Chỉ"
             }
         ));
         tblNhaCungCap.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -212,7 +212,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblNhaCungCap);
         if (tblNhaCungCap.getColumnModel().getColumnCount() > 0) {
-            tblNhaCungCap.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tblNhaCungCap.getColumnModel().getColumn(0).setPreferredWidth(0);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -238,6 +238,13 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTimKiemActionPerformed(evt);
+            }
+        });
+
+        txtTimKiem.setText("Tìm Kiếm Thông Tin Ở Đây !!!");
+        txtTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTimKiemMouseClicked(evt);
             }
         });
 
@@ -482,7 +489,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Bạn chưa nhập tên nhà cung cấp");
             }
              else if (txtTimKiem.getText().length() > 0) {
-                sql = sql + " where DaXoa=0 and TenNCC like '%" + txtTimKiem.getText() + "%'";
+                sql = sql + " where DaXoa=0 and TenNCC like N'%" + txtTimKiem.getText() + "%'";
             
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -501,9 +508,8 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                     rs.getString("DiaChi"),};
                 tableModel.addRow(row);
             }
-            
             tableModel.fireTableDataChanged();
-            JOptionPane.showMessageDialog(this, "Tìm thấy nhà cung cấp có tên gần đúng là: " + txtTimKiem.getText());
+            
             rs.close();
             ps.close();
             conn.close();
@@ -514,6 +520,11 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void txtTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseClicked
+       txtTimKiem.setText("");
+       txtTimKiem.grabFocus();
+    }//GEN-LAST:event_txtTimKiemMouseClicked
 
     /**
      * @param args the command line arguments

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package view;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,16 +17,19 @@ import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.util.Date;  
+import java.util.Date;
+
 /**
  *
  * @author admin
  */
 public class frmBanHang extends javax.swing.JFrame {
-     public Connection conn;
-     public   PreparedStatement ps=null;
-     public   ResultSet rs=null;
-     DefaultTableModel dtm;
+
+    public Connection conn;
+    public PreparedStatement ps = null;
+    public ResultSet rs = null;
+    DefaultTableModel dtm;
+
     /**
      * Creates new form frmHoaDon
      */
@@ -33,146 +37,145 @@ public class frmBanHang extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         KetNoiCSDL();
-        dtm=(DefaultTableModel)tblHoaDon.getModel();
+        dtm = (DefaultTableModel) tblHoaDon.getModel();
         HienThiCboTenLinhKien();
         HienThiCboNhanVien();
         HienThiCboKhachHang();
     }
-    public Connection KetNoiCSDL(){
-        String user="sa";
-        String pass="123456";
-        try{
-            conn=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLLinhKienPC_Laptop_java",user,pass);
-            
+
+    public Connection KetNoiCSDL() {
+        String user = "sa";
+        String pass = "123456";
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QLLinhKienPC_Laptop_java", user, pass);
+
             return conn;
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return conn;
     }
-    public void HienThiCboTenLinhKien(){
-        try{
-            conn=KetNoiCSDL();
-            String sql="select TenLinhKien from LinhKien where DaXoa=0";
-            ps=conn.prepareStatement(sql);
-            rs=ps.executeQuery();
+
+    public void HienThiCboTenLinhKien() {
+        try {
+            conn = KetNoiCSDL();
+            String sql = "select TenLinhKien from LinhKien where DaXoa=0";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
             cboTenLK.removeAllItems();
-            while(rs.next()){
+            while (rs.next()) {
                 cboTenLK.addItem(rs.getString("TenLinhKien"));
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void HienThiCboNhanVien(){
-        try{
-           // conn=KetNoiCSDL();
-            String sql="select HoTen from NHANVIEN where DaXoa=0";
-            ps=conn.prepareStatement(sql);
-            rs=ps.executeQuery();
+
+    public void HienThiCboNhanVien() {
+        try {
+            // conn=KetNoiCSDL();
+            String sql = "select HoTen from NHANVIEN where DaXoa=0";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
             cboTenNV.removeAllItems();
-            while(rs.next()){
+            while (rs.next()) {
                 cboTenNV.addItem(rs.getString("HoTen"));
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void HienThiCboKhachHang(){
-        try{
+
+    public void HienThiCboKhachHang() {
+        try {
             //conn=KetNoiCSDL();
-            String sql="select HoTen from KHACHHANG where DaXoa=0";
-            ps=conn.prepareStatement(sql);
-            rs=ps.executeQuery();
+            String sql = "select HoTen from KHACHHANG where DaXoa=0";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
             cboTenKH.removeAllItems();
-            while(rs.next()){
+            while (rs.next()) {
                 cboTenKH.addItem(rs.getString("HoTen"));
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     //---------------------------------------------------------------------
-    private int LayMaKhachHangTheoTen(String TenKH){
-        int Ma=0;
-        try{
+    private int LayMaKhachHangTheoTen(String TenKH) {
+        int Ma = 0;
+        try {
             //conn=KetNoiCSDL();
-            String sql="select MaKhachHang from KHACHHANG where DaXoa=0 and Hoten=?";
-            ps=conn.prepareStatement(sql);
+            String sql = "select MaKhachHang from KHACHHANG where DaXoa=0 and Hoten=?";
+            ps = conn.prepareStatement(sql);
             ps.setString(1, TenKH);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                 Ma=rs.getInt("MaKhachHang");
-                 return Ma;
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MaKhachHang");
+                return Ma;
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            // xong gán nó cho thằng mã này
+        // xong gán nó cho thằng mã này
         return Ma;
     }
-    
-    private int LayMaNhanVienTheoTen(String TenNV){
-        int Ma=0;
-        try{
+
+    private int LayMaNhanVienTheoTen(String TenNV) {
+        int Ma = 0;
+        try {
             //conn=KetNoiCSDL();
-            String sql="select MANV from NHANVIEN where DaXoa=0 and HoTen=?";
-            ps=conn.prepareStatement(sql);
+            String sql = "select MANV from NHANVIEN where DaXoa=0 and HoTen=?";
+            ps = conn.prepareStatement(sql);
             ps.setString(1, TenNV);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                 Ma=rs.getInt("MANV");
-                 return Ma;
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MANV");
+                return Ma;
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            // xong gán nó cho thằng mã này
+        // xong gán nó cho thằng mã này
         return Ma;
     }
-    
-    private int LayMaLinhKienTheoTen(String TenLinhKien){
-        int Ma=0;
-        try{
-            conn=KetNoiCSDL();
-            String sql="select MaLinhKien from LinhKien where DaXoa=0 and TenLinhKien=?";
-            ps=conn.prepareStatement(sql);
+
+    private int LayMaLinhKienTheoTen(String TenLinhKien) {
+        int Ma = 0;
+        try {
+            conn = KetNoiCSDL();
+            String sql = "select MaLinhKien from LinhKien where DaXoa=0 and TenLinhKien=?";
+            ps = conn.prepareStatement(sql);
             ps.setString(1, TenLinhKien);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                 Ma=rs.getInt("MaLinhKien");
-                 return Ma;
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MaLinhKien");
+                return Ma;
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            // xong gán nó cho thằng mã này
+        // xong gán nó cho thằng mã này
         return Ma;
     }
-    
-    void hienThiThongTinSauKhiChonSanPham(String tenLK){
-        try{
-            conn=KetNoiCSDL();
-            String sql="select MaLinhKien,GiaBan from LinhKien where TenLinhKien=?";
-            ps=conn.prepareStatement(sql);
+
+    void hienThiThongTinSauKhiChonSanPham(String tenLK) {
+        try {
+            conn = KetNoiCSDL();
+            String sql = "select MaLinhKien,GiaBan from LinhKien where TenLinhKien=?";
+            ps = conn.prepareStatement(sql);
             ps.setString(1, tenLK);
-            rs=ps.executeQuery();
-            while(rs.next()){
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 txtGiaBan.setText(rs.getString("GiaBan"));
                 txtMaLK.setText(rs.getString("MaLinhKien"));
                 return;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -457,9 +460,9 @@ public class frmBanHang extends javax.swing.JFrame {
 
     private void cboTenLKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTenLKActionPerformed
         // TODO add your handling code here:
-       // cboTenLK.setSelectedItem(cboTenLK.getSelectedIndex());
-       //hienThiThongTinSauKhiChonSanPham(cboTenLK.getItemAt(cboTenLK.getSelectedIndex()));
-       // HienThiCboTenLinhKien();
+        // cboTenLK.setSelectedItem(cboTenLK.getSelectedIndex());
+        //hienThiThongTinSauKhiChonSanPham(cboTenLK.getItemAt(cboTenLK.getSelectedIndex()));
+        // HienThiCboTenLinhKien();
     }//GEN-LAST:event_cboTenLKActionPerformed
 
     private void cboTenLKMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenLKMouseEntered
@@ -474,17 +477,17 @@ public class frmBanHang extends javax.swing.JFrame {
 
     private void cboTenLKItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboTenLKItemStateChanged
         // TODO add your handling code here:
-      
+
     }//GEN-LAST:event_cboTenLKItemStateChanged
 
     private void cboTenLKMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenLKMousePressed
         // TODO add your handling code here:
-            
+
     }//GEN-LAST:event_cboTenLKMousePressed
 
     private void cboTenLKMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenLKMouseExited
         // TODO add your handling code here:
-     
+
     }//GEN-LAST:event_cboTenLKMouseExited
 
     private void cboTenLKMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenLKMouseReleased
@@ -504,160 +507,160 @@ public class frmBanHang extends javax.swing.JFrame {
 
     private void txtSoLuongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoLuongKeyPressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtSoLuongKeyPressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if(txtSoLuong.getText().equals("") ||txtGiaBan.getText().equals("")||
-                txtMaLK.getText().equals("")){
+        if (txtSoLuong.getText().equals("") || txtGiaBan.getText().equals("")
+                || txtMaLK.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập đủ thông tin");
             return;
         }
-        try{
-            int slban=Integer.parseInt(txtSoLuong.getText());
-        }catch(Exception e){
+        try {
+            int slban = Integer.parseInt(txtSoLuong.getText());
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Số lượng phải là số");
             return;
         }
-        try{
-            long giaban=Long.parseLong(txtGiaBan.getText());
-        }catch(Exception e){
+        try {
+            long giaban = Long.parseLong(txtGiaBan.getText());
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Gía bán phải là số");
             return;
         }
-        
-        int slban=Integer.parseInt(txtSoLuong.getText());
-        long giaban=Long.parseLong(txtGiaBan.getText());
-        long thanhTien=slban*giaban;
-        int row=tblHoaDon.getRowCount();
-        
+
+        int slban = Integer.parseInt(txtSoLuong.getText());
+        long giaban = Long.parseLong(txtGiaBan.getText());
+        long thanhTien = slban * giaban;
+        int row = tblHoaDon.getRowCount();
+
         for (int i = 0; i < row; i++) {
-            
-            if(tblHoaDon.getValueAt(i, 1).equals(txtMaLK.getText())){
-                int slHienTai=Integer.parseInt(tblHoaDon.getValueAt(i, 3).toString());
-                int slThem=Integer.parseInt(txtSoLuong.getText());
-                
-                int tongSL=slHienTai+slThem;
-                long thanhTienMoi=giaban*tongSL;
-                long giaBanMoi=Long.parseLong(txtGiaBan.getText());
-               
-                tblHoaDon.setValueAt(giaBanMoi+"", i, 2);
-                tblHoaDon.setValueAt(tongSL+"", i, 3);
-                tblHoaDon.setValueAt(thanhTienMoi+"", i, 4);
-                
+
+            if (tblHoaDon.getValueAt(i, 1).equals(txtMaLK.getText())) {
+                int slHienTai = Integer.parseInt(tblHoaDon.getValueAt(i, 3).toString());
+                int slThem = Integer.parseInt(txtSoLuong.getText());
+
+                int tongSL = slHienTai + slThem;
+                long thanhTienMoi = giaban * tongSL;
+                long giaBanMoi = Long.parseLong(txtGiaBan.getText());
+
+                tblHoaDon.setValueAt(giaBanMoi + "", i, 2);
+                tblHoaDon.setValueAt(tongSL + "", i, 3);
+                tblHoaDon.setValueAt(thanhTienMoi + "", i, 4);
+
                 txtGiaBan.setText("");
                 txtSoLuong.setText("");
                 txtMaLK.setText("");
                 txtThanhTien.setText("");
-                
-                long tongTien=tinhTongTien();
+
+                long tongTien = tinhTongTien();
                 Locale VN = new Locale("vi", "VN");
                 Currency dollars = Currency.getInstance(VN);
                 NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
                 txtTongTien.setText(VNDFormat.format(tongTien));
                 return;
-                
+
             }
-            
+
         }
-                Vector<Object> vec=new Vector<>();
-                vec.add(cboTenLK.getSelectedItem().toString());
-                vec.add(txtMaLK.getText());
-                vec.add(txtGiaBan.getText());
-                vec.add(txtSoLuong.getText());
-                vec.add(thanhTien+"");
-                dtm.addRow(vec);
-                
-                txtGiaBan.setText("");
-                txtSoLuong.setText("");
-                txtMaLK.setText("");
-                txtThanhTien.setText("");
-                
-                long tongTien=tinhTongTien();
-                Locale VN = new Locale("vi", "VN");
-                Currency dollars = Currency.getInstance(VN);
-                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
-                txtTongTien.setText(VNDFormat.format(tongTien));
+        Vector<Object> vec = new Vector<>();
+        vec.add(cboTenLK.getSelectedItem().toString());
+        vec.add(txtMaLK.getText());
+        vec.add(txtGiaBan.getText());
+        vec.add(txtSoLuong.getText());
+        vec.add(thanhTien + "");
+        dtm.addRow(vec);
+
+        txtGiaBan.setText("");
+        txtSoLuong.setText("");
+        txtMaLK.setText("");
+        txtThanhTien.setText("");
+
+        long tongTien = tinhTongTien();
+        Locale VN = new Locale("vi", "VN");
+        Currency dollars = Currency.getInstance(VN);
+        NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+        txtTongTien.setText(VNDFormat.format(tongTien));
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
         // TODO add your handling code here:
-        int row=tblHoaDon.getSelectedRow();
+        int row = tblHoaDon.getSelectedRow();
         txtGiaBan.setText(tblHoaDon.getValueAt(row, 2).toString());
         txtMaLK.setText(tblHoaDon.getValueAt(row, 1).toString());
         txtSoLuong.setText(tblHoaDon.getValueAt(row, 3).toString());
         txtThanhTien.setText(tblHoaDon.getValueAt(row, 4).toString());
         cboTenLK.getModel().setSelectedItem(tblHoaDon.getValueAt(row, 0).toString());
-        
-         
+
+
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void txtGiaBanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtGiaBanMouseClicked
         // TODO add your handling code here:
-       hienThiThongTinSauKhiChonSanPham(cboTenLK.getItemAt(cboTenLK.getSelectedIndex()));
-       txtThanhTien.setText("");
+        hienThiThongTinSauKhiChonSanPham(cboTenLK.getItemAt(cboTenLK.getSelectedIndex()));
+        txtThanhTien.setText("");
     }//GEN-LAST:event_txtGiaBanMouseClicked
 
     private void btnXoaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSPActionPerformed
         // TODO add your handling code here:
-        int row=tblHoaDon.getSelectedRow();
-        if(row==-1){
+        int row = tblHoaDon.getSelectedRow();
+        if (row == -1) {
             JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn hàng trong bảng để xóa");
             return;
-        }
-        else{
+        } else {
             dtm.removeRow(row);
-            long tongTien=tinhTongTien();
-                Locale VN = new Locale("vi", "VN");
-                Currency dollars = Currency.getInstance(VN);
-                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
-                txtTongTien.setText(VNDFormat.format(tongTien));
+            long tongTien = tinhTongTien();
+            Locale VN = new Locale("vi", "VN");
+            Currency dollars = Currency.getInstance(VN);
+            NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+            txtTongTien.setText(VNDFormat.format(tongTien));
         }
     }//GEN-LAST:event_btnXoaSPActionPerformed
-    
-    private void themHoaDon(int maKH, int maNV, long tongTien){
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");  
-        Date date = new Date();  
-        String date1=formatter.format(date).toString();
-        try{
-            conn=KetNoiCSDL();
-            String sql="insert into HOADON(MANV,MaKhachHang,NgayXuatHoaDon,Tongtien,DaXoa)\n" +
-                        "values(?,?,?,?,?)";
-            ps=conn.prepareStatement(sql);
+
+    private void themHoaDon(int maKH, int maNV, long tongTien) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = new Date();
+        String date1 = formatter.format(date).toString();
+        try {
+            conn = KetNoiCSDL();
+            String sql = "insert into HOADON(MANV,MaKhachHang,NgayXuatHoaDon,Tongtien,DaXoa)\n"
+                    + "values(?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, maNV);
             ps.setInt(2, maKH);
             ps.setString(3, date1);
             ps.setLong(4, tongTien);
             ps.setInt(5, 0);
             ps.executeUpdate();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private int layMaHoaDon(){
-        int ma=0;
-        try{
-            conn=KetNoiCSDL();
-            String sql="select top 1 MaHoaDon from HOADON order by MaHoaDon desc";
-            ps=conn.prepareStatement(sql);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                ma=rs.getInt("MaHoaDon");
+
+    private int layMaHoaDon() {
+        int ma = 0;
+        try {
+            conn = KetNoiCSDL();
+            String sql = "select top 1 MaHoaDon from HOADON order by MaHoaDon desc";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ma = rs.getInt("MaHoaDon");
                 return ma;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ma;
     }
-    
-    private void themCTHD(int maHD, int maLK,String tenLK,long giaBan,int soLuong,long thanhTien){
-         try{
-             conn=KetNoiCSDL();
-            String sql="insert into CTHD(MaHoaDon,MaLinhKien,TenLinhKien,GiaBan,SoLuong,ThanhTien)\n" +
-                        "values(?,?,?,?,?,?)";
-            ps=conn.prepareStatement(sql);
+
+    private void themCTHD(int maHD, int maLK, String tenLK, long giaBan, int soLuong, long thanhTien) {
+        try {
+            conn = KetNoiCSDL();
+            String sql = "insert into CTHD(MaHoaDon,MaLinhKien,TenLinhKien,GiaBan,SoLuong,ThanhTien)\n"
+                    + "values(?,?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, maHD);
             ps.setInt(2, maLK);
             ps.setString(3, tenLK);
@@ -665,29 +668,28 @@ public class frmBanHang extends javax.swing.JFrame {
             ps.setInt(5, soLuong);
             ps.setLong(6, thanhTien);
             ps.executeUpdate();
-         }catch(Exception e){
-             e.printStackTrace();
-         }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
-        int rowCount=tblHoaDon.getRowCount();
-        if(rowCount==-1){
+        int rowCount = tblHoaDon.getRowCount();
+        if (rowCount == -1) {
             JOptionPane.showMessageDialog(rootPane, "Chưa thêm sản phẩm ");
             return;
-        }
-        else{
-            int maNV=LayMaNhanVienTheoTen(cboTenNV.getSelectedItem().toString());
-            int maKH=LayMaKhachHangTheoTen(cboTenKH.getSelectedItem().toString());
-            long tongTien=tinhTongTien();
+        } else {
+            int maNV = LayMaNhanVienTheoTen(cboTenNV.getSelectedItem().toString());
+            int maKH = LayMaKhachHangTheoTen(cboTenKH.getSelectedItem().toString());
+            long tongTien = tinhTongTien();
             themHoaDon(maKH, maNV, tongTien);
-            int maHD=layMaHoaDon();
+            int maHD = layMaHoaDon();
             for (int i = 0; i < rowCount; i++) {
-                String tenLK=tblHoaDon.getValueAt(i, 0).toString();
-                int maLK=Integer.parseInt(tblHoaDon.getValueAt(i, 1).toString());
-                long giaBan=Long.parseLong(tblHoaDon.getValueAt(i, 2).toString());
-                int soLuong=Integer.parseInt(tblHoaDon.getValueAt(i, 3).toString());
-                long thanhTien=Long.parseLong(tblHoaDon.getValueAt(i, 4).toString());
+                String tenLK = tblHoaDon.getValueAt(i, 0).toString();
+                int maLK = Integer.parseInt(tblHoaDon.getValueAt(i, 1).toString());
+                long giaBan = Long.parseLong(tblHoaDon.getValueAt(i, 2).toString());
+                int soLuong = Integer.parseInt(tblHoaDon.getValueAt(i, 3).toString());
+                long thanhTien = Long.parseLong(tblHoaDon.getValueAt(i, 4).toString());
                 themCTHD(maHD, maLK, tenLK, giaBan, soLuong, thanhTien);
             }
             dtm.setRowCount(0);
@@ -699,17 +701,17 @@ public class frmBanHang extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Thanh toán thành công ");
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
-    
-    private long tinhTongTien(){
-         int row=tblHoaDon.getRowCount();
-         long tongtien=0;
-         for (int i = 0; i < row; i++) {
-            long ThanhTien=Long.parseLong(tblHoaDon.getValueAt(i, 4).toString());
-            tongtien+=ThanhTien;
+
+    private long tinhTongTien() {
+        long tongtien = 0;
+        int row = tblHoaDon.getRowCount();
+        for (int i = 0; i < row; i++) {
+            long ThanhTien = Long.parseLong(tblHoaDon.getValueAt(i, 4).toString());
+            tongtien += ThanhTien;
         }
-         return tongtien;
+        return tongtien;
     }
-   
+
     /**
      * @param args the command line arguments
      */
