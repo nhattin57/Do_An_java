@@ -9,9 +9,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Currency;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -143,6 +148,47 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
         return tongtien;
     }
 
+    private void them_PNH(int maNCC, int maNV, double tongTien) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String date1 = formatter.format(date);
+        try {
+            conn = ConnectToDataBase();
+            String sql = "insert into PhieuNhapHang(MANV,MaNCC,NgayNhapHang,Tongtien,DaXoa)\n"
+                    + "values(?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, maNV);
+            ps.setInt(2, maNCC);
+            ps.setString(3, date1);
+            ps.setDouble(4, tongTien);
+            ps.setInt(5, 0);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void them_CT_PNH(int ma_PNH, int Loai_LK, int maLK, String TenLinhKien, String xuatSu, String baoHanh, double giaBan, int soLuong, double thanhTien) {
+        try {
+            conn = ConnectToDataBase();
+            String sql = "insert into CTPNH(MaPNH,MaLinhKien,LoaiLinhKien,TenLinhKien,XuatSu,BaoHanh,GiaBan,SoLuongNhap,ThanhTien)\n"
+                    + "values(?,?,?,?,?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, ma_PNH);
+            ps.setInt(2, maLK);
+            ps.setInt(3, Loai_LK);
+            ps.setString(4, TenLinhKien);
+            ps.setString(5, xuatSu);
+            ps.setString(6, baoHanh);
+            ps.setDouble(7, giaBan);
+            ps.setInt(8, soLuong);
+            ps.setDouble(9, thanhTien);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,7 +200,6 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtma_ct = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -204,9 +249,7 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(txtma_ct, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(426, 426, 426))
         );
@@ -214,9 +257,7 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(29, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtma_ct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addComponent(jLabel1)
                 .addContainerGap())
         );
 
@@ -314,6 +355,11 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
         });
 
         txtThanhToan.setText("Thanh toán");
+        txtThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtThanhToanActionPerformed(evt);
+            }
+        });
 
         txtThemMoi.setText("Thêm mới");
         txtThemMoi.addActionListener(new java.awt.event.ActionListener() {
@@ -323,6 +369,11 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
         });
 
         txtXoa.setText("Xóa");
+        txtXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtXoaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -633,11 +684,10 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
             int row = table_CT.getRowCount();
 
             for (int i = 0; i < row; i++) {
-
+                //kiểm tra nếu trùng tên thì tăng số lượng và cập nhật lại số lượng sản phẩm và số tiền của phiếu nhập hàng
                 if (table_CT.getValueAt(i, 1).equals(txtTen_SP.getText())) {
                     int slHienTai = Integer.parseInt(tableModel_CT_PNH.getValueAt(i, 5).toString());
                     int slThem = Integer.parseInt(txtSL.getText());
-
                     int tongSL = slHienTai + slThem;
                     double thanhTienMoi = giaban * tongSL;
                     double giaBanMoi = Double.parseDouble(txtGia_SP.getText());
@@ -645,11 +695,7 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
                     tableModel_CT_PNH.setValueAt(giaBanMoi + "", i, 4);
                     tableModel_CT_PNH.setValueAt(tongSL + "", i, 5);
                     tableModel_CT_PNH.setValueAt(thanhTienMoi + "", i, 6);
-
-                    txtGia_SP.setText("");
-                    txtSL.setText("");
-                    txtma_ct.setText("");
-                    txtThanhTien.setText("");
+                    lamMoiCTPhieuNhapHang();
 
                     double tongTien = tinhTongTien();
                     Locale VN = new Locale("vi", "VN");
@@ -661,28 +707,189 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
             }
             Vector<Object> vec = new Vector<>();
 
-                vec.add(cbbLoai_SP.getSelectedItem().toString());
-                vec.add(txtTen_SP.getText());
-                vec.add(txtXuatSu_SP.getText());
-                vec.add(txtBaoHanh.getText());
-                vec.add(txtGia_SP.getText());
-                vec.add(txtSL.getText());
-                vec.add(thanhTien + "");
+            vec.add(cbbLoai_SP.getSelectedItem().toString());
+            vec.add(txtTen_SP.getText());
+            vec.add(txtXuatSu_SP.getText());
+            vec.add(txtBaoHanh.getText());
+            vec.add(txtGia_SP.getText());
+            vec.add(txtSL.getText());
+            vec.add(thanhTien + "");
 
-                tableModel_CT_PNH.addRow(vec);
-                lamMoiCTPhieuNhapHang();
-                tableModel_CT_PNH.fireTableDataChanged();
+            tableModel_CT_PNH.addRow(vec);
+            lamMoiCTPhieuNhapHang();
+            tableModel_CT_PNH.fireTableDataChanged();
 
-                double tongTien = tinhTongTien();
-                Locale VN = new Locale("vi", "VN");
-                Currency dollars = Currency.getInstance(VN);
-                NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
-                txtTongTien.setText(VNDFormat.format(tongTien));
+            double tongTien = tinhTongTien();
+            Locale VN = new Locale("vi", "VN");
+            Currency dollars = Currency.getInstance(VN);
+            NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+            txtTongTien.setText(VNDFormat.format(tongTien));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
             e.printStackTrace();
         }
     }//GEN-LAST:event_txtThemMoiActionPerformed
+
+    private int LayMaNhanVienTheoTen(String TenNV) {
+        int Ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select MANV from NHANVIEN where DaXoa=0 and HoTen=?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, TenNV);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MANV");
+                return Ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Ma;
+    }
+
+    private int LayMaNCCTheoTen(String TenNCC) {
+        int Ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select MaNCC from NhaCungCap where DaXoa=0 and TenNCC=?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, TenNCC);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MaNCC");
+                return Ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Ma;
+    }
+
+    private int LayMaLinhKien() {
+        int Ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select MaLinhKien from LinhKien where DaXoa=0";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MaLinhKien");
+                return Ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Ma;
+    }
+
+    private int LayMaLinhLoaiKienTheoTen(String loai_LK) {
+        int Ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select a.MaLoaiLinhKien from LoaiLinhKien a, CTPNH b where a.MaLoaiLinhKien = b.LoaiLinhKien and TenLoaiLinhKien = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, loai_LK);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Ma = rs.getInt("MaLoaiLinhKien");
+                return Ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Ma;
+    }
+
+    private int layMa_PNH() {
+        int ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select top 1 MaPNH from PhieuNhapHang order by MaPNH desc ";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ma = rs.getInt("MaPNH");
+                return ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
+    private int layMa_CT_PNH() {
+        int ma = 0;
+        try {
+            conn = ConnectToDataBase();
+            String sql = "select top 1 a.MaCTPNH from CTPNH a, PhieuNhapHang b where a.MaCTPNH = B.MaPNH order by MaCTPNH desc ";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ma = rs.getInt("MaCTPNH");
+                return ma;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
+    private void txtXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtXoaActionPerformed
+        int row = table_CT.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn phiếu nhập hàng trong bảng để xóa");
+            return;
+        } else {
+            tableModel_CT_PNH.removeRow(row);
+            double tongTien = tinhTongTien();
+            Locale VN = new Locale("vi", "VN");
+            Currency dollars = Currency.getInstance(VN);
+            NumberFormat VNDFormat = NumberFormat.getCurrencyInstance(VN);
+            txtTongTien.setText(VNDFormat.format(tongTien));
+            lamMoiCTPhieuNhapHang();
+        }
+    }//GEN-LAST:event_txtXoaActionPerformed
+
+    private void txtThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThanhToanActionPerformed
+        try {
+            int rowCount = table_CT.getRowCount();
+            if (rowCount == -1) {
+                JOptionPane.showMessageDialog(rootPane, "Chưa thêm Phiếu nhập hàng ");
+                return;
+            } else {
+                int maNV = LayMaNhanVienTheoTen(cbbNhanVien.getSelectedItem().toString());
+                int maNCC = LayMaNCCTheoTen(cbbNhaCungCap.getSelectedItem().toString());
+                int maLoai_LK = LayMaLinhLoaiKienTheoTen(cbbLoai_SP.getSelectedItem().toString());
+                double tongTien = tinhTongTien();
+                
+                them_PNH(maNCC, maNV, tongTien);
+                
+                int maPNH = layMa_PNH();
+                int maCT_PNH = layMa_CT_PNH();
+                int maLK = LayMaLinhKien();
+                
+                for (int i = 0; i < rowCount; i++) {
+                    String tenLK = tableModel_CT_PNH.getValueAt(i, 1).toString();
+                    String xuatSu = tableModel_CT_PNH.getValueAt(i, 2).toString();
+                    String baohanh = tableModel_CT_PNH.getValueAt(i, 3).toString();
+                    double giaBan = Double.parseDouble(tableModel_CT_PNH.getValueAt(i, 4).toString());
+                    int soLuong = Integer.parseInt(tableModel_CT_PNH.getValueAt(i, 5).toString());
+                    double thanhTien = Double.parseDouble(tableModel_CT_PNH.getValueAt(i, 6).toString());
+                    them_CT_PNH(maPNH, maLK, maLoai_LK, tenLK, xuatSu, baohanh, giaBan, soLuong, thanhTien);
+                };
+                
+               tableModel_CT_PNH.setRowCount(0);
+                lamMoiPhieuNhapHang();
+                lamMoiCTPhieuNhapHang();
+                txtTongTien.setText("");
+                JOptionPane.showMessageDialog(this, "Thanh toán thành công");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_txtThanhToanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -760,6 +967,5 @@ public class frmPhieuNhapHang extends javax.swing.JFrame {
     private javax.swing.JTextField txtTongTien;
     private javax.swing.JButton txtXoa;
     private javax.swing.JTextField txtXuatSu_SP;
-    private javax.swing.JTextField txtma_ct;
     // End of variables declaration//GEN-END:variables
 }
