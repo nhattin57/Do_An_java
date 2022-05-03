@@ -61,15 +61,14 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            //cập nhập lại giá trị bên trong bảng nha cung cấp
+            //Xóa dữ liệu bên trong bảng nhà cung cấp
             tableModel.setRowCount(0);
             while (rs.next()) {
                 String[] row = new String[]{
                     rs.getString("MaNCC"),
                     rs.getString("TenNCC"),
                     rs.getString("SDT"),
-                    rs.getString("DiaChi"),
-                    };
+                    rs.getString("DiaChi"),};
                 tableModel.addRow(row);
             }
 
@@ -86,7 +85,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     }
 
     public void refresh() {
-        txtMaNhaCungCap.setText("");
+       //txtMaNhaCungCap.setText("");
         txtTenNhaCungCap.setText("");
         txtDiaChi.setText("");
         txtSDT.setText("");
@@ -101,11 +100,9 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtMaNhaCungCap = new javax.swing.JTextField();
         txtTenNhaCungCap = new javax.swing.JTextField();
         txtDiaChi = new javax.swing.JTextField();
         txtSDT = new javax.swing.JTextField();
@@ -144,15 +141,11 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin chung "));
 
-        jLabel2.setText("Mã nhà cung cấp");
-
         jLabel3.setText("Tên nhà cung cấp");
 
         jLabel4.setText("Địa chỉ");
 
         jLabel5.setText("Số điện thoại");
-
-        txtMaNhaCungCap.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -161,29 +154,23 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4))
                 .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMaNhaCungCap, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                    .addComponent(txtTenNhaCungCap)
-                    .addComponent(txtDiaChi)
-                    .addComponent(txtSDT))
-                .addGap(104, 104, 104))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtTenNhaCungCap, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                    .addComponent(txtSDT)
+                    .addComponent(txtDiaChi))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtMaNhaCungCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtTenNhaCungCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTenNhaCungCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -192,7 +179,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách nhà cung cấp"));
@@ -219,10 +206,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,37 +266,38 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnThemLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(btnThemLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, btnThemLayout.createSequentialGroup()
-                        .addComponent(btnCapNhat)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, btnThemLayout.createSequentialGroup()
-                        .addComponent(btnTimKiem)
+                        .addGap(14, 14, 14)
+                        .addComponent(txtTimKiem)
+                        .addGap(27, 27, 27))
+                    .addGroup(btnThemLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(txtTimKiem)))
-                .addGap(27, 27, 27))
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCapNhat)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 13, Short.MAX_VALUE))))
         );
         btnThemLayout.setVerticalGroup(
             btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnThemLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(btnThemLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTimKiem)
-                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(btnThemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -322,13 +307,16 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -337,10 +325,10 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -360,7 +348,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn vào dòng cần hiển thị");
                 return;
             } else {
-                txtMaNhaCungCap.setText(tblNhaCungCap.getValueAt(row, 0).toString());
+                //txtMaNhaCungCap.setText(tblNhaCungCap.getValueAt(row, 0).toString());
                 txtTenNhaCungCap.setText(tblNhaCungCap.getValueAt(row, 1).toString());
                 txtSDT.setText(tblNhaCungCap.getValueAt(row, 2).toString());
                 txtDiaChi.setText(tblNhaCungCap.getValueAt(row, 3).toString());
@@ -373,32 +361,39 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
 
-        if (JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật nhà cung cấp ?") == JOptionPane.NO_OPTION) {
+        int row = tblNhaCungCap.getSelectedRow();
+
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn nhà cung cấp trong bảng!!!");
             return;
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật nhà cung cấp ?") == JOptionPane.NO_OPTION) {
+                return;
+            }
+            try {
+                conn = ConnectToDataBase();
+                String sql = "update  NHACUNGCAP set TenNCC = ?, SDT = ?, DiaChi = ?, DaXoa = ?"
+                        + "     where MaNCC = ? ";
+                ps = conn.prepareStatement(sql);
+
+                ps.setString(1, txtTenNhaCungCap.getText());
+                ps.setString(2, txtSDT.getText());
+                ps.setString(3, txtDiaChi.getText());
+                ps.setInt(4, 0);
+                ps.setString(5, tableModel.getValueAt(row, 0).toString());
+
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(rootPane, "Cập nhật nhà cung cấp thành công");
+                hienThiDuLieu();
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+                e.printStackTrace();
+            }
         }
-        try {
-            conn = ConnectToDataBase();
 
-            String sql = "update  NHACUNGCAP set TenNCC = ?, SDT = ?, DiaChi = ?, DaXoa = ?"
-                    + "     where MaNCC = ? ";
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, txtTenNhaCungCap.getText());
-            ps.setString(2, txtSDT.getText());
-            ps.setString(3, txtDiaChi.getText());
-            ps.setInt(4, 0);
-            ps.setString(5, txtMaNhaCungCap.getText());
-
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(rootPane, "Cập nhật nhà cung cấp thành công");
-            hienThiDuLieu();
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
@@ -407,24 +402,23 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
             Validation.check(txtTenNhaCungCap, sb, "Tên nhà cung cấp không được để trống");
             Validation.check(txtDiaChi, sb, "Địa chỉ không được để trống");
-               while (true) {
-                    if (txtSDT.getText().trim().equals("")) {
-                       JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
-                        txtSDT.grabFocus();
-                        return;
-                    } else if (txtSDT.getText().trim().length() > 11 || txtSDT.getText().trim().length() < 10) {
-                        JOptionPane.showMessageDialog(this, "SĐT chứa từ 10-11 số.");
-                        txtSDT.grabFocus();
-                        return;
-                    } else if (!txtSDT.getText().trim().matches("0[1-9]{1}\\d{8,9}")) {
-                         JOptionPane.showMessageDialog(this, "SĐT chưa đúng định dạng.");
-                        txtSDT.grabFocus();
-                        return;
-                    } else {
-                        break;
-                    }
+            while (true) {
+                if (txtSDT.getText().trim().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+                    txtSDT.grabFocus();
+                    return;
+                } else if (txtSDT.getText().trim().length() > 11 || txtSDT.getText().trim().length() < 10) {
+                    JOptionPane.showMessageDialog(this, "SĐT chứa từ 10-11 số.");
+                    txtSDT.grabFocus();
+                    return;
+                } else if (!txtSDT.getText().trim().matches("0[1-9]{1}\\d{8,9}")) {
+                    JOptionPane.showMessageDialog(this, "SĐT chưa đúng định dạng.");
+                    txtSDT.grabFocus();
+                    return;
+                } else {
+                    break;
                 }
-
+            }
             if (sb.length() > 0) {
                 JOptionPane.showMessageDialog(this, sb.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -433,12 +427,11 @@ public class frmNhaCungCap extends javax.swing.JFrame {
             conn = ConnectToDataBase();
             String sql = "insert into NHACUNGCAP(TenNCC,SDT,DiaChi,DaXoa) values(?,?,?,?)";
             ps = conn.prepareStatement(sql);
-
             ps.setString(1, txtTenNhaCungCap.getText());
             ps.setString(2, txtSDT.getText());
             ps.setString(3, txtDiaChi.getText());
             ps.setInt(4, 0);
-            
+
             ps.executeUpdate();
 
             hienThiDuLieu();
@@ -456,64 +449,68 @@ public class frmNhaCungCap extends javax.swing.JFrame {
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         int row = tblNhaCungCap.getSelectedRow();
-        if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa nhà nhà cung cấp ?") == JOptionPane.NO_OPTION) {
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn nhà cung cấp để xóa");
             return;
-        }
-        try {
-            int maLK = Integer.parseInt(tblNhaCungCap.getValueAt(row, 0).toString());
-            conn = ConnectToDataBase();
-            String sql = "update NHACUNGCAP set daxoa = 1 where MaNCC = ? ";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, maLK);
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(rootPane, "Xóa nhà cung cấp thành công");
-            hienThiDuLieu();
-            refresh();
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            e.printStackTrace();
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa nhà nhà cung cấp ?") == JOptionPane.NO_OPTION) {
+                return;
+            }
+            try {
+                int maLK = Integer.parseInt(tblNhaCungCap.getValueAt(row, 0).toString());
+                conn = ConnectToDataBase();
+                String sql = "update NHACUNGCAP set daxoa = 1 where MaNCC = ? ";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, maLK);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(rootPane, "Xóa nhà cung cấp thành công");
+                hienThiDuLieu();
+                refresh();
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-       try {
+        try {
             //xóa trắng dữ liệu bên trong bảng nhà cung cấp
             tableModel.setRowCount(0);
             conn = ConnectToDataBase();
 
             String sql = "select * from NHACUNGCAP ";
-             if (txtTimKiem.getText().equals("")) {
+            if (txtTimKiem.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "Bạn chưa nhập tên nhà cung cấp");
-            }
-             else if (txtTimKiem.getText().length() > 0) {
+            } else if (txtTimKiem.getText().length() > 0) {
                 sql = sql + " where DaXoa=0 and TenNCC like N'%" + txtTimKiem.getText() + "%'";
-            
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
 
-            if (rs.isBeforeFirst() == false) {
-                JOptionPane.showMessageDialog(this, "Tên nhà cung cấp "+ txtTimKiem.getText()+ " không tồn tại trong danh sách!");
-                txtTimKiem.setText("");
-                txtTimKiem.grabFocus();
-                return;
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+
+                if (rs.isBeforeFirst() == false) {
+                    JOptionPane.showMessageDialog(this, "Tên nhà cung cấp: " + txtTimKiem.getText() + " không tồn tại trong danh sách!");
+                    txtTimKiem.setText("");
+                    txtTimKiem.grabFocus();
+                    return;
+                }
+                while (rs.next()) {
+                    String[] row = new String[]{
+                        rs.getString("MaNCC"),
+                        rs.getString("TenNCC"),
+                        rs.getString("SDT"),
+                        rs.getString("DiaChi"),};
+                    tableModel.addRow(row);
+                }
+                tableModel.fireTableDataChanged();
+
+                rs.close();
+                ps.close();
+                conn.close();
             }
-            while (rs.next()) {
-                String[] row = new String[]{
-                    rs.getString("MaNCC"),
-                    rs.getString("TenNCC"),
-                    rs.getString("SDT"),
-                    rs.getString("DiaChi"),};
-                tableModel.addRow(row);
-            }
-            tableModel.fireTableDataChanged();
-            
-            rs.close();
-            ps.close();
-            conn.close();
-          }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -522,8 +519,8 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void txtTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseClicked
-       txtTimKiem.setText("");
-       txtTimKiem.grabFocus();
+        txtTimKiem.setText("");
+        txtTimKiem.grabFocus();
     }//GEN-LAST:event_txtTimKiemMouseClicked
 
     /**
@@ -569,7 +566,6 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -579,7 +575,6 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblNhaCungCap;
     private javax.swing.JTextField txtDiaChi;
-    private javax.swing.JTextField txtMaNhaCungCap;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTenNhaCungCap;
     private javax.swing.JTextField txtTimKiem;

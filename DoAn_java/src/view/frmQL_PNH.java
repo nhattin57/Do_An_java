@@ -993,6 +993,7 @@ public class frmQL_PNH extends javax.swing.JFrame {
     private void txtTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseClicked
         txtTimKiem.setText("");
         txtTimKiem.grabFocus();
+        tableModel_CT_PNH.setRowCount(0);
     }//GEN-LAST:event_txtTimKiemMouseClicked
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
