@@ -85,7 +85,7 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     }
 
     public void refresh() {
-       //txtMaNhaCungCap.setText("");
+        //txtMaNhaCungCap.setText("");
         txtTenNhaCungCap.setText("");
         txtDiaChi.setText("");
         txtSDT.setText("");
@@ -480,6 +480,9 @@ public class frmNhaCungCap extends javax.swing.JFrame {
         try {
             //xóa trắng dữ liệu bên trong bảng nhà cung cấp
             tableModel.setRowCount(0);
+            txtTenNhaCungCap.setText("");
+            txtDiaChi.setText("");
+            txtSDT.setText("");
             conn = ConnectToDataBase();
 
             String sql = "select * from NHACUNGCAP ";
@@ -521,6 +524,9 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     private void txtTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseClicked
         txtTimKiem.setText("");
         txtTimKiem.grabFocus();
+        txtTenNhaCungCap.setText("");
+        txtDiaChi.setText("");
+        txtSDT.setText("");
     }//GEN-LAST:event_txtTimKiemMouseClicked
 
     /**
