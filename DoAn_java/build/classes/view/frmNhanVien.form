@@ -225,8 +225,8 @@
                           </Group>
                           <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="cbbMaCV" max="32767" attributes="0"/>
-                              <Component id="cbbGioiTinh" pref="300" max="32767" attributes="0"/>
+                              <Component id="cbbMaCV" pref="300" max="32767" attributes="0"/>
+                              <Component id="txtGioiTinh" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -257,10 +257,10 @@
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtNamSinh" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbbGioiTinh" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtGioiTinh" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -342,12 +342,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbbGioiTinh">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
+        <Component class="javax.swing.JTextField" name="txtGioiTinh">
         </Component>
       </SubComponents>
     </Container>

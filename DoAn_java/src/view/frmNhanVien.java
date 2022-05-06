@@ -29,7 +29,7 @@ public class frmNhanVien extends javax.swing.JFrame {
 
     public frmNhanVien() {
         initComponents();
-        layGioiTinh_LenCBB();
+        //layGioiTinh_LenCBB();
         layTenChucVu_LenCBB();
         setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) TableNhanVien.getModel();
@@ -95,7 +95,7 @@ public class frmNhanVien extends javax.swing.JFrame {
         txtDiaChi.setText("");
         txtSDT.setText("");
         txtNamSinh.setText("");
-        cbbGioiTinh.addItem("");
+        txtGioiTinh.setText("");
         // txtMaChucVu.setText("");
         txtTaiKhoan.setText("");
         txtMatKhau.setText("");
@@ -125,30 +125,30 @@ public class frmNhanVien extends javax.swing.JFrame {
         }
     }
 
-    private void layGioiTinh_LenCBB() {
-        try {
-            conn = ConnectToServer();
-            String sql = "select GioiTinh \n"
-                    + "from NHANVIEN\n"
-                    + "where DaXoa=0\n"
-                    + "group by GioiTinh";
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            Vector data = new Vector();
-            while (rs.next()) {
-                data.add(rs.getString("GioiTinh"));
-            }
-            DefaultComboBoxModel conBoxModel = new DefaultComboBoxModel(data);
-            cbbGioiTinh.setModel(conBoxModel);
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            e.printStackTrace();
-        }
-    }
+//    private void layGioiTinh_LenCBB() {
+//        try {
+//            conn = ConnectToServer();
+//            String sql = "select GioiTinh \n"
+//                    + "from NHANVIEN\n"
+//                    + "where DaXoa=0\n"
+//                    + "group by GioiTinh";
+//            ps = conn.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//
+//            Vector data = new Vector();
+//            while (rs.next()) {
+//                data.add(rs.getString("GioiTinh"));
+//            }
+//            DefaultComboBoxModel conBoxModel = new DefaultComboBoxModel(data);
+//            cbbGioiTinh.setModel(conBoxModel);
+//            rs.close();
+//            ps.close();
+//            conn.close();
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(this, e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -180,7 +180,7 @@ public class frmNhanVien extends javax.swing.JFrame {
         txtTaiKhoan = new javax.swing.JTextField();
         txtMatKhau = new javax.swing.JTextField();
         cbbMaCV = new javax.swing.JComboBox();
-        cbbGioiTinh = new javax.swing.JComboBox();
+        txtGioiTinh = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -315,8 +315,8 @@ public class frmNhanVien extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbbMaCV, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbbGioiTinh, 0, 300, Short.MAX_VALUE))))
+                            .addComponent(cbbMaCV, 0, 300, Short.MAX_VALUE)
+                            .addComponent(txtGioiTinh))))
                 .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -338,10 +338,10 @@ public class frmNhanVien extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtNamSinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(cbbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -450,7 +450,7 @@ public class frmNhanVien extends javax.swing.JFrame {
                 txtDiaChi.setText(TableNhanVien.getValueAt(row, 2).toString());
                 txtSDT.setText(TableNhanVien.getValueAt(row, 3).toString());
                 txtNamSinh.setText(TableNhanVien.getValueAt(row, 4).toString());
-                cbbGioiTinh.getModel().setSelectedItem(tableModel.getValueAt(row, 5));
+                txtGioiTinh.setText(TableNhanVien.getValueAt(row, 5).toString());
                 cbbMaCV.getModel().setSelectedItem(tableModel.getValueAt(row, 6));
                 txtTaiKhoan.setText(TableNhanVien.getValueAt(row, 7).toString());
                 txtMatKhau.setText(TableNhanVien.getValueAt(row, 8).toString());
@@ -477,7 +477,7 @@ public class frmNhanVien extends javax.swing.JFrame {
             ps.setString(2, txtDiaChi.getText());
             ps.setString(3, txtSDT.getText());
             ps.setString(4, txtNamSinh.getText());
-            ps.setInt((int)5, (int) tableModel.getValueAt(row, 5));
+            ps.setString(5, txtGioiTinh.getText());
             ps.setString(6, cbbMaCV.toString());
             ps.setString(7, txtTaiKhoan.getText());
             ps.setString(8, txtMatKhau.getText());
@@ -538,7 +538,7 @@ public class frmNhanVien extends javax.swing.JFrame {
             ps.setString(2, txtDiaChi.getText());
             ps.setString(3, txtSDT.getText());
             ps.setString(4, txtNamSinh.getText());
-            ps.setString(5, cbbGioiTinh.toString());
+            ps.setString(5, txtGioiTinh.getText());
             // ps.setString(6, txtMaChucVu.getText());
             ps.setString(7, txtTaiKhoan.getText());
             ps.setString(8, txtMatKhau.getText());
@@ -651,7 +651,6 @@ public class frmNhanVien extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.JComboBox cbbGioiTinh;
     private javax.swing.JComboBox cbbMaCV;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -667,6 +666,7 @@ public class frmNhanVien extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtDiaChi;
+    private javax.swing.JTextField txtGioiTinh;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMatKhau;
     private javax.swing.JTextField txtNamSinh;
